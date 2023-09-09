@@ -1,0 +1,21 @@
+.logo {
+    font-size:84px;
+    font-weight:bolder;
+    margin-bottom:10px;
+
+    color:var(--primary);
+
+    cursor:pointer;
+}
+
+.desc {
+    font-size:28px;
+    font-weight:500;
+    margin-top:20px;
+    margin-bottom: 60px;
+}
+
+a.submit_button {
+    width:500px;
+    margin-top:20px;
+}

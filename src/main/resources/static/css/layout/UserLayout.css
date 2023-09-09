@@ -1,0 +1,90 @@
+@import url("../utils/reset.css");
+
+body{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Main Wrapper */
+.layout_main {
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    margin:auto;
+
+    width:600px;
+
+    position:relative;
+}
+
+/* Input Wrapper */
+.input_wrapper {
+    width:100%;
+    height:90px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:flex-start;
+
+    margin:auto;
+    margin-bottom:12px;
+}
+
+.input_wrapper label{
+    color: var(--primary);
+    font-size:22px;
+    font-weight:bold;
+}
+
+.input_wrapper input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border: none;
+    border-radius:10px;
+
+    box-sizing:border-box;
+
+    background-color: var(--grey);
+    padding: 10px 20px;
+    width: 500px;
+    height: 60px;
+}
+
+.input_wrapper input::placeholder {
+    font-size:22px;
+    font-weight:bolder;
+}
+
+
+.submit_button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    border:none;
+    border-radius:10px;
+
+    width:100%;
+    height:60px;
+
+    margin-top:40px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    color:white;
+    font-size:38px;
+    font-weight:bolder;
+
+    background-color:var(--primary);
+    cursor:pointer;
+}
+
+a {
+    text-decoration:none;
+}
