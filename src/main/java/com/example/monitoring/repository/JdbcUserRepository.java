@@ -17,6 +17,27 @@ public class JdbcUserRepository implements IUserRepository {
     }
 
     @Override
+    public boolean save(User user) {
+        String sql = "INSERT INTO user(email, PASSWORD, NAME) VALUES (?, ?, ?);";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, user.getEmail());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getName());
+
+            pstmt.executeQuery();
+            return true;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt);
+        }
+    }
+
+    @Override
     public Optional<User> findByEmail(String email) {
         String sql = "select * from user where email=?";
         Connection conn = null;
@@ -43,7 +64,6 @@ public class JdbcUserRepository implements IUserRepository {
             close(conn, pstmt, rs);
         }
     }
-
 
     @Override
     public List<User> findAll() {
@@ -85,6 +105,23 @@ public class JdbcUserRepository implements IUserRepository {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        try {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        try {
+            if (conn != null) {
+                close(conn);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void close(Connection conn, PreparedStatement pstmt) {
         try {
             if (pstmt != null) {
                 pstmt.close();

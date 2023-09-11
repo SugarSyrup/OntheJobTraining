@@ -48,3 +48,13 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+::placeholder {
+	vertical-align:text-bottom;
+	margin-top:5px;
+}
+
+input[type=text] {
+	font-size:20px;
+	font-weight:bold;
+}
