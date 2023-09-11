@@ -24,7 +24,7 @@ public class SignUpController extends HttpServlet {
     @GetMapping("/sign-up")
     public String getIndex(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        if(session.isNew() || session.getAttribute("no") == null) {
+        if(session.isNew() || session.getAttribute("id") == null) {
             return "sign-up";
         } else {
             return "main";

@@ -1,5 +1,6 @@
 package com.example.monitoring.repository;
 
+import com.example.monitoring.domain.Role;
 import com.example.monitoring.domain.User;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
@@ -51,9 +52,11 @@ public class JdbcUserRepository implements IUserRepository {
 
             if (rs.next()) {
                 User user = new User();
+                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
+                user.setRole(Role.valueOf(rs.getString("role")));
                 return Optional.of(user);
             } else {
                 return Optional.empty();

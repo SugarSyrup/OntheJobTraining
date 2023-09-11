@@ -46,4 +46,8 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public String toString() {
+        return Integer.toString(user_no) + email + name + role;
+    }
 }

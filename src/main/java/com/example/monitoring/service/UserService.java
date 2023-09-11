@@ -32,6 +32,7 @@ public class UserService {
 
     public ResponseMesssage findUserByEmail(String email, String password) {
         Optional<User> result = userRepository.findByEmail(email);
+        System.out.println(result.get());
         ResponseMesssage msg = new ResponseMesssage();
         if(result.isPresent()){
             User user = result.orElseGet(() -> new User());

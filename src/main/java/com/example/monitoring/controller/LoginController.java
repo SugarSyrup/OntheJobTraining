@@ -19,10 +19,10 @@ public class LoginController{
     @GetMapping("/")
     public String getIndex(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        if(session.isNew() || session.getAttribute("no") == null) {
+        if(session.isNew() || session.getAttribute("id") == null) {
             return "login";
         } else {
-            return "main";
+            return "redirect:/main";
         }
     }
 
@@ -37,9 +37,10 @@ public class LoginController{
 
         if(msg.getOk()) {
             HttpSession session = req.getSession();
-            session.setAttribute("no", msg.getMessage());
+            System.out.println(msg.getMessage());
+            session.setAttribute("id", msg.getMessage());
 
-            return "main";
+            return "redirect:/main";
         } else {
             return "login";
         }

@@ -8,13 +8,6 @@
     cursor:pointer;
 }
 
-.desc {
-    font-size:28px;
-    font-weight:500;
-    margin-top:20px;
-    margin-bottom: 60px;
-}
-
 input.submit_button {
     margin-top:50px;
 }
