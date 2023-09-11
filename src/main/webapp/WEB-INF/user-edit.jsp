@@ -9,15 +9,15 @@
 </head>
 <body>
 <main class="layout_main">
-    <a href="/">
+    <a>
         <h1 class="logo">개인 정보</h1>
     </a>
 
     <% if(session.getAttribute("id")!=null) { %>
-    <form class="login_wrapper" action="/sign-up" method="post">
+    <form class="login_wrapper" action="/user-edit" method="post">
         <div class="input_wrapper">
             <label for="email">Email</label>
-            <input type="text" placeholder="이메일을 입력해주세요..." id="email" name="email" required/>
+            <input type="text" placeholder="이메일을 입력해주세요..." id="email" name="email" value=<%=request.getAttribute("email")%> required readonly/>
         </div>
         <div class="input_wrapper">
             <label for="password">Password</label>
@@ -29,7 +29,7 @@
         </div>
         <div class="input_wrapper">
             <label for="name">Name</label>
-            <input type="text" placeholder="이름을 입력해주세요..." id="name" name="name"  required/>
+            <input type="text" placeholder="이름을 입력해주세요..." id="name" name="name" value=<%=request.getAttribute("name")%> required/>
         </div>
         <span class="errmsg">${ requestScope.Message.getOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
         <a class="submit_button red">

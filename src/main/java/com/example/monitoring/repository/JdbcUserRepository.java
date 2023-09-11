@@ -6,6 +6,7 @@ import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -69,6 +70,36 @@ public class JdbcUserRepository implements IUserRepository {
     }
 
     @Override
+    public Optional<User> findByKey(String key) {
+        String sql = "select * from user where user_no=?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,key);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                User user = new User();
+                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setRole(Role.valueOf(rs.getString("role")));
+                return Optional.of(user);
+            } else {
+                return Optional.empty();
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    @Override
     public List<User> findAll() {
         String sql = "select * from user";
         Connection conn = null;
@@ -91,6 +122,30 @@ public class JdbcUserRepository implements IUserRepository {
             throw new IllegalStateException(e);
         } finally {
             close(conn, pstmt, rs);
+        }
+    }
+
+    public boolean updateUserByUniqueKey(User user) {
+        String sql = "update user set password=?, name=?, up_date=? where user_no=? ";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat up_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,user.getPassword());
+            pstmt.setString(2,user.getName());
+            pstmt.setString(3,up_date.format(timestamp));
+            pstmt.setString(4,Integer.toString(user.getUserNo()));
+            pstmt.executeQuery();
+
+            return true;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt);
         }
     }
 

@@ -32,7 +32,6 @@ public class UserService {
 
     public ResponseMesssage findUserByEmail(String email, String password) {
         Optional<User> result = userRepository.findByEmail(email);
-        System.out.println(result.get());
         ResponseMesssage msg = new ResponseMesssage();
         if(result.isPresent()){
             User user = result.orElseGet(() -> new User());
@@ -52,7 +51,26 @@ public class UserService {
         return msg;
     }
 
+    public User findUserByKey(String key) {
+        Optional<User> result = userRepository.findByKey(key);
+        if(result.isPresent()) {
+            User user = result.orElseGet(() -> new User());
+            return user;
+        }
+
+        return null;
+    }
+
     public List<User> findUsers() {
         return userRepository.findAll();
+    }
+
+    public boolean updateUser(User user) {
+        boolean result = userRepository.updateUserByUniqueKey(user);
+
+        if(result) {
+            return true;
+        }
+        return false;
     }
 }
