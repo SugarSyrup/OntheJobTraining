@@ -14,6 +14,7 @@ public class MainController {
         if(session.isNew() || session.getAttribute("id") == null) {
             return "redirect:/";
         } else {
+            req.setAttribute("where", "main");
             return "main";
         }
     }

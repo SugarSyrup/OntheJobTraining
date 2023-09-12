@@ -13,7 +13,7 @@ header {
     width: 100%;
     height:80px;
 
-    padding:30px 14px;
+    padding:20px 30px;
     box-sizing:border-box;
 
     display:flex;
@@ -48,5 +48,77 @@ span.accent_button {
     background-color:var(--primary);
     color:white;
     border-radius:10px;
+    cursor:pointer;
+}
+
+span.accent_underline {
+    border-bottom: 10px solid var(--grey);
+}
+
+main {
+    width:90%;
+    margin-top:40px;
+
+    display:flex;
+    justify-content: space-between;
+    align-items:flex-start;
+    gap:30px;
+}
+
+.sidemenu {
+    width:300px;
+    padding:20px 20px;
+    border-radius:6px;
+
+    background-color:var(--grey);
+
+    display:flex;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: center;
+    gap:20px;
+}
+
+.sidemenu .input_wrapper {
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items:flex-start;
+}
+
+.sidemenu .input_wrapper label {
+    font-size:28px;
+    margin-bottom:2px;
+}
+
+.sidemenu .input_wrapper input,
+.sidemenu .input_wrapper select {
+    border:none;
+    border-radius:6px;
+
+    width:250px;
+    height:40px;
+
+    padding-left:8px;
+    font-size:18px;
+
+    cursor:pointer;
+}
+
+.sidemenu .input_wrapper input::placeholder {
+    font-size:18px;
+}
+
+.sidemenu .submit {
+    border:none;
+    border-radius:6px;
+
+    width:250px;
+    height:40px;
+
+    font-size:26px;
+    font-weight:bolder;
+    color:white;
+    background-color:var(--primary);
     cursor:pointer;
 }

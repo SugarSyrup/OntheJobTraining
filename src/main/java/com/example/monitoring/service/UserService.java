@@ -1,6 +1,7 @@
 package com.example.monitoring.service;
 
 import com.example.monitoring.domain.ResponseMesssage;
+import com.example.monitoring.domain.Role;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.repository.IUserRepository;
 import org.apache.coyote.Response;
@@ -61,7 +62,15 @@ public class UserService {
         return null;
     }
 
-    public List<User> findUsers() {
+    public List<User> findUsersByName(String name) {
+        return userRepository.findUsersByName(name);
+    }
+
+    public List<User> findUsersByNameNRole(String name, Role role) {
+        return userRepository.findUsersByNameNRole(name, role);
+    }
+
+    public List<User> getUsers() {
         return userRepository.findAll();
     }
 
@@ -76,5 +85,9 @@ public class UserService {
 
     public void deleteUserByKey(String key) {
         userRepository.deleteUserByKey(key);
+    }
+
+    public void updateUserRole(String key, Role role) {
+        userRepository.updateUserRoleByKey(key, role);
     }
 }

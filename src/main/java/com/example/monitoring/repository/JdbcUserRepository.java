@@ -58,6 +58,7 @@ public class JdbcUserRepository implements IUserRepository {
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
                 user.setRole(Role.valueOf(rs.getString("role")));
+                user.setRegistDate(rs.getString("regist_date"));
                 return Optional.of(user);
             } else {
                 return Optional.empty();
@@ -88,10 +89,73 @@ public class JdbcUserRepository implements IUserRepository {
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
                 user.setRole(Role.valueOf(rs.getString("role")));
+                user.setRegistDate(rs.getString("regist_date"));
                 return Optional.of(user);
             } else {
                 return Optional.empty();
             }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    @Override
+    public List<User> findUsersByName(String name) {
+        String sql = "SELECT * FROM user WHERE name LIKE ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,"%" + name + "%");
+            rs = pstmt.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setRole(Role.valueOf(rs.getString("role")));
+                user.setRegistDate(rs.getString("regist_date"));
+                users.add(user);
+            }
+            return users;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    @Override
+    public List<User> findUsersByNameNRole(String name, Role role) {
+        String sql = "select * from user WHERE name LIKE ? AND role = ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + name + "%");
+            pstmt.setString(2, String.valueOf(role));
+            rs = pstmt.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password"));
+                user.setName(rs.getString("name"));
+                user.setRole(Role.valueOf(rs.getString("role")));
+                user.setRegistDate(rs.getString("regist_date"));
+                users.add(user);
+            }
+            return users;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         } finally {
@@ -112,9 +176,12 @@ public class JdbcUserRepository implements IUserRepository {
             List<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
+                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
+                user.setRole(Role.valueOf(rs.getString("role")));
+                user.setRegistDate(rs.getString("regist_date"));
                 users.add(user);
             }
             return users;
@@ -148,6 +215,28 @@ public class JdbcUserRepository implements IUserRepository {
             close(conn, pstmt);
         }
     }
+
+    public void updateUserRoleByKey(String key, Role role) {
+        String sql = "update user set role=?, up_date=? where user_no=? ";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        SimpleDateFormat up_date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,String.valueOf(role));
+            pstmt.setString(2,up_date.format(timestamp));
+            pstmt.setString(3,key);
+            pstmt.executeQuery();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt);
+        }
+    }
+
 
     public void deleteUserByKey(String key) {
         String sql = "DELETE FROM user WHERE user_no=? ";

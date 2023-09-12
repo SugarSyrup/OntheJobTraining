@@ -13,7 +13,7 @@
         </a>
         <div class="links">
             <a href="/main">
-                <span class="link">조회</span>
+                <span class="link accent_underline">조회</span>
             </a>
             <a href="/equipement">
                 <span class="link">장비</span>
