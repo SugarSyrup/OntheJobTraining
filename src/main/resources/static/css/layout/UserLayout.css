@@ -97,7 +97,3 @@ body{
     background-color:var(--primary);
     cursor:pointer;
 }
-
-a {
-    text-decoration:none;
-}
