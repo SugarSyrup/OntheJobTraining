@@ -18,4 +18,6 @@ public interface IUserRepository {
     //UPDATE
     boolean updateUserByUniqueKey(User user);/* User-Edit POST */
 
+    //DELETE
+    void deleteUserByKey(String key);
 }

@@ -73,4 +73,8 @@ public class UserService {
         }
         return false;
     }
+
+    public void deleteUserByKey(String key) {
+        userRepository.deleteUserByKey(key);
+    }
 }

@@ -18,3 +18,45 @@
     width:500px;
     margin-top:30px;
 }
+
+.modal {
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+    gap:50px;
+}
+
+.modal span {
+    font-size:56px;
+    font-weight:bolder;
+}
+
+.modal .btns {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap:20px;
+
+    position:relative;
+}
+
+.modal_btn {
+    width:250px;
+    height:80px;
+
+    border-radius:10px;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor:pointer;
+
+    background-color:var(--primary);
+    color:white;
+}
+
+.modal_btn:nth-child(2) {
+    background-color:var(--red);
+}

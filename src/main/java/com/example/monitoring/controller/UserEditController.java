@@ -3,8 +3,10 @@ package com.example.monitoring.controller;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -51,4 +53,13 @@ public class UserEditController {
         }
     }
 
+    @DeleteMapping("/api/user-edit")
+    public String DeleteUser(HttpServletRequest req) {
+        HttpSession session = req.getSession();
+        String key = (String) session.getAttribute("id");
+
+        userService.deleteUserByKey(key);
+        session.removeAttribute("id");
+        return "redirect:/";
+    }
 }

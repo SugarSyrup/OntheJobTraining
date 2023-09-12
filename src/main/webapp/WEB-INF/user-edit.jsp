@@ -3,11 +3,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/layout/Modal.css">
     <link rel="stylesheet" href="./css/layout/UserLayout.css">
     <link rel="stylesheet" href="./css/common/useredit.css">
     <title>Monitoring | UserEdit</title>
 </head>
 <body>
+
+<!-- Modal -->
+<dialog class="modal_wrapper ">
+    <div class="modal ">
+        <span>회원 탈퇴를 하시겠습니까?</span>
+        <div class="btns">
+            <span class="modal_btn modal_yes">예</span>
+            <span class="modal_btn modal_no">아니요</span>
+        </div>
+    </div>
+</dialog>
+
 <main class="layout_main">
     <a>
         <h1 class="logo">개인 정보</h1>
@@ -32,7 +45,7 @@
             <input type="text" placeholder="이름을 입력해주세요..." id="name" name="name" value=<%=request.getAttribute("name")%> required/>
         </div>
         <span class="errmsg">${ requestScope.Message.getOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
-        <a class="submit_button red">
+        <a class="submit_button red" id="modal_open">
             <span>
                 회원 탈퇴
             </span>
@@ -48,5 +61,9 @@
         response.sendRedirect("/");
     } %>
 </main>
+
+
+<script src="./js/utils/modal.js"></script>
+<script src="./js/common/user-edit.js"></script>
 </body>
 </html>

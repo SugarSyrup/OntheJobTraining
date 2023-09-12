@@ -149,6 +149,22 @@ public class JdbcUserRepository implements IUserRepository {
         }
     }
 
+    public void deleteUserByKey(String key) {
+        String sql = "DELETE FROM user WHERE user_no=? ";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1,key);
+            pstmt.executeQuery();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt);
+        }
+    }
+
     private Connection getConnection() {
         return DataSourceUtils.getConnection(dataSource);
     }
