@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.regex.Pattern;
 
 @Controller
 public class SignUpController extends HttpServlet {
@@ -38,26 +39,36 @@ public class SignUpController extends HttpServlet {
         String password = req.getParameter("password");
         String password_check = req.getParameter("password_check");
         String name = req.getParameter("name");
+        String REGEXP_EMAIL = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+        String REGEXP_PASSWORD = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$";
+
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setPassword(password);
 
         ResponseMesssage msg = new ResponseMesssage();
-        if(!password_check.equals(password)) {
+        if (!Pattern.matches(REGEXP_EMAIL, email)) {
+           msg.setOk(false);
+           msg.setMessage("이메일 형식이 잘못 되었습니다");
+        } else if(!password_check.equals(password)) {
             msg.setOk(false);
-            msg.setMessage("비밀번호를 똑랕이 입력해야 합니다.");
+            msg.setMessage("비밀번호를 똑같이 입력해야 합니다.");
+        } else if(!Pattern.matches(REGEXP_PASSWORD, password)) {
+            msg.setOk(false);
+            msg.setMessage("비밀번호는 최소 8자리에서 최대 16자리 숫자,영문,특수문자를 포함해야 합니다.");
         } else {
-            User user = new User();
-            user.setEmail(email);
-            user.setName(name);
-            user.setPassword(password);
-
             msg = userService.save(user);
         }
 
+        req.setAttribute("UserInfo", user);
+        req.setAttribute("password_check", password_check);
         req.setAttribute("Message", msg);
+
         if(msg.getOk()) {
             return "login";
         } else {
             return "sign-up";
         }
-
     }
 }

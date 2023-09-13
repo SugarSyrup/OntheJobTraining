@@ -6,6 +6,8 @@
     overflow:auto;
 
     padding-right:20px;
+    position:relative;
+    margin-top:10px;
 }
 
 .table_wrapper::-webkit-scrollbar {
@@ -26,18 +28,28 @@
 .users_table {
     width:100%;
     text-align:center;
-    margin-top:10px;
+    position:relative;
 }
 
 .users_table thead{
-    border-collapse: collapse;
+    position:sticky;
+    top:0px;
+    width:80%;
+    height:60px;
+    z-index:100000;
+    border-collapse: separate;
+    border-spacing:0;
     border-bottom:1px solid var(--grey);
+    background-color:var(--bgColor);
 }
 
 .users_table thead td,
 .users_table thead th {
+    position:sticky;
+    top:10px;
     padding-bottom:10px;
     font-size:24px;
+    border-bottom:1px solid var(--grey);
 }
 
 .users_table tbody tr td:first-child { border-top-left-radius: 16px; }

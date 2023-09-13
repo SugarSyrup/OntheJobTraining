@@ -99,11 +99,11 @@
         <table class="users_table">
             <thead>
                 <tr>
-                    <td>이름</td>
-                    <td>이메일</td>
-                    <td>권한</td>
-                    <td>등록날짜</td>
-                    <td> </td>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>권한</th>
+                    <th>등록날짜</th>
+                    <th> </th>
                 </tr>
             </thead>
             <tbody>
