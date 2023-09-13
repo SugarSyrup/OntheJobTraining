@@ -16,17 +16,34 @@ import java.util.List;
 @Controller
 public class UsersController {
     private UserService userService;
+    private List<User> users;
+    private String name;
+    private String role;
 
     public UsersController(UserService userService) {
+        System.out.println("Contorller starts");
         this.userService = userService;
+        this.name = "";
+        this.role = "NONE";
+        this.users = new ArrayList<User>(userService.getUsers());
     }
 
     @GetMapping("/users")
     public String GetUsers(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        List<User> users = new ArrayList<User>(userService.getUsers());
 
+        if(role.equals("NONE")) {
+            this.users = userService.findUsersByName(name);
+        }
+        else {
+            Role userRole = Role.valueOf(role);
+            this.users = userService.findUsersByNameNRole(name, userRole);
+        }
+
+        req.setAttribute("name", this.name);
+        req.setAttribute("role", this.role);
         req.setAttribute("userList", users);
+
         if(session.isNew() || session.getAttribute("id") == null) {
             return "redirect:/";
         } else {
@@ -36,18 +53,19 @@ public class UsersController {
 
     @PostMapping("/users")
     public String PostUsers(HttpServletRequest req) {
-        String name = req.getParameter("name");
-        String role = req.getParameter("role");
-
-        List<User> users;
+        this.name = req.getParameter("name");
+        this.role = req.getParameter("role");
 
         if(role.equals("NONE")) {
-            users = userService.findUsersByName(name);
+            this.users = userService.findUsersByName(name);
         }
         else {
             Role userRole = Role.valueOf(role);
-            users = userService.findUsersByNameNRole(name, userRole);
+            this.users = userService.findUsersByNameNRole(name, userRole);
         }
+
+        req.setAttribute("name", this.name);
+        req.setAttribute("role", this.role);
         req.setAttribute("userList", users);
 
         return "users";
@@ -56,9 +74,7 @@ public class UsersController {
     @PostMapping("/api/user-delete")
     public String DeleteUser(HttpServletRequest req, @RequestBody String user) {
         userService.deleteUserByKey(user.split("\"")[3]);
-        List<User> users = new ArrayList<User>(userService.getUsers());
 
-        req.setAttribute("userList", users);
         return "redirect:/users";
     }
 
@@ -69,9 +85,7 @@ public class UsersController {
         Role userRole = Role.valueOf(role);
 
         userService.updateUserRole(user_no, userRole);
-        List<User> users = new ArrayList<User>(userService.getUsers());
 
-        req.setAttribute("userList", users);
         return "redirect:/users";
     }
 }

@@ -77,18 +77,19 @@
     <form class="sidemenu" id="sidemenuForm" action="/users" method="post">
         <div class="input_wrapper">
             <label for="name">이름</label>
-            <input id="name" placeholder="이름을 입력하세요.." name="name" />
+            <input id="name" placeholder="이름을 입력하세요.." name="name" valie="${requestScope.name == "" ? "" : requestScope.name}" />
         </div>
         <div class="input_wrapper">
             <label for="role">권한</label>
             <select name="role" id="role" form="sidemenuForm">
-                <option value="NONE" selected>
+                ${requestScope.role}
+                <option value="NONE" ${requestScope.role.equals("NONE") ? "selected" : ""} >
                     ==== 선택 ====
                 </option>
-                <option value="USER">
+                <option value="USER" ${requestScope.role.equals("USER") ? "selected" : ""} >
                     일반 유저
                 </option>
-                <option value="ADMIN">
+                <option value="ADMIN" ${requestScope.role.equals("ADMIN") ? "selected" : ""} >
                     관리자
                 </option>
             </select>

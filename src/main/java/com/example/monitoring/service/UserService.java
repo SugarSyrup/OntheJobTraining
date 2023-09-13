@@ -16,7 +16,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseMesssage save(User user) {
+    public ResponseMesssage createUser(User user) {
         boolean result = userRepository.save(user);
         ResponseMesssage msg = new ResponseMesssage();
 

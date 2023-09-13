@@ -58,7 +58,7 @@ public class SignUpController extends HttpServlet {
             msg.setOk(false);
             msg.setMessage("비밀번호는 최소 8자리에서 최대 16자리 숫자,영문,특수문자를 포함해야 합니다.");
         } else {
-            msg = userService.save(user);
+            msg = userService.createUser(user);
         }
 
         req.setAttribute("UserInfo", user);
