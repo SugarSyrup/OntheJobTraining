@@ -7,31 +7,32 @@
     <title>Monitoring | Main</title>
 </head>
 <body>
-    <header>
-        <a href="/main">
-            <span class="logo">LOGO</span>
+<header>
+    <a href="/main">
+        <span class="logo">LOGO</span>
+    </a>
+    <div class="links">
+        <a href="/main" class="main_link">
+            <span class="link accent_underline">조회</span>
         </a>
-        <div class="links">
-            <a href="/main">
-                <span class="link accent_underline">조회</span>
-            </a>
-            <a href="/equipement">
-                <span class="link">장비</span>
-            </a>
-            <a href="/users">
-                <span class="link">유저관리</span>
-            </a>
-            <a href="/user-edit">
-                <span class="link">개인정보</span>
-            </a>
-            <span class="accent_button logout">
+        <a href="/equipment"  class="equipment_link">
+            <span class="link">장비</span>
+        </a>
+        <a href="/users"  class="users_link">
+            <span class="link">유저관리</span>
+        </a>
+        <a href="/user-edit">
+            <span class="link">개인정보</span>
+        </a>
+        <span class="accent_button logout">
                 로그아웃
-            </span>
-        </div>
-    </header>
+        </span>
+    </div>
+</header>
     <main>
 
     </main>
+    <script src="./js/utils/header.js"></script>
     <script src="./js/utils/logout.js"></script>
 </body>
 </html>

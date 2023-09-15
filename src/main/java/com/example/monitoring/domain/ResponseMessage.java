@@ -1,8 +1,13 @@
 package com.example.monitoring.domain;
 
-public class ResponseMesssage {
+public class ResponseMessage {
     private String message;
     private boolean ok;
+
+    public ResponseMessage() {
+        this.ok = false;
+        this.message = "";
+    }
 
     public String getMessage() {
         return this.message;

@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class JdbcUserRepository implements IUserRepository {
+public class UserRepository implements IUserRepository {
     private final DataSource dataSource;
 
-    public JdbcUserRepository(DataSource dataSource) {
+    public UserRepository(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -173,7 +173,7 @@ public class JdbcUserRepository implements IUserRepository {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
-            List<User> users = new ArrayList<>();
+            List<User> users = new ArrayList<User>();
             while (rs.next()) {
                 User user = new User();
                 user.setUserNo(Integer.parseInt(rs.getString("user_no")));
@@ -185,6 +185,30 @@ public class JdbcUserRepository implements IUserRepository {
                 users.add(user);
             }
             return users;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    public boolean findDuplicatedEmail(String email){
+        String sql = "SELECT COUNT(*) FROM user WHERE email LIKE ?";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            rs.next();
+            if(rs.getInt(1) > 0) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (Exception e) {
             throw new IllegalStateException(e);
         } finally {

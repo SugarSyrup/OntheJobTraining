@@ -6,6 +6,7 @@ public class User {
     private String password;
     private String name;
     private Role role;
+
     private String regist_date;
     public String getEmail() {
         return this.email;
@@ -51,7 +52,17 @@ public class User {
 
     public void setRegistDate(String date) { this.regist_date = date; }
 
+
+    @Override
     public String toString() {
-        return Integer.toString(user_no) + email + name + role;
+        return "User{" +
+                "user_no=" + user_no +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", role=" + role +
+                ", regist_date='" + regist_date + '\'' +
+                '}';
     }
+
 }

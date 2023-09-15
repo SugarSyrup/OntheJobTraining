@@ -56,13 +56,13 @@
         <span class="logo">LOGO</span>
     </a>
     <div class="links">
-        <a href="/main">
+        <a href="/main" class="main_link">
             <span class="link">조회</span>
         </a>
-        <a href="/equipement">
+        <a href="/equipment"  class="equipment_link">
             <span class="link">장비</span>
         </a>
-        <a href="/users">
+        <a href="/users"  class="users_link">
             <span class="link accent_underline">유저관리</span>
         </a>
         <a href="/user-edit">
@@ -74,28 +74,28 @@
     </div>
 </header>
 <main>
-    <form class="sidemenu" id="sidemenuForm" action="/users" method="post">
-        <div class="input_wrapper">
-            <label for="name">이름</label>
-            <input id="name" placeholder="이름을 입력하세요.." name="name" valie="${requestScope.name == "" ? "" : requestScope.name}" />
-        </div>
-        <div class="input_wrapper">
-            <label for="role">권한</label>
-            <select name="role" id="role" form="sidemenuForm">
-                ${requestScope.role}
-                <option value="NONE" ${requestScope.role.equals("NONE") ? "selected" : ""} >
-                    ==== 선택 ====
-                </option>
-                <option value="USER" ${requestScope.role.equals("USER") ? "selected" : ""} >
-                    일반 유저
-                </option>
-                <option value="ADMIN" ${requestScope.role.equals("ADMIN") ? "selected" : ""} >
-                    관리자
-                </option>
-            </select>
-        </div>
-        <input type="submit" value="검색하기" class="submit"/>
-    </form>
+        <form class="sidemenu" id="sidemenuForm" action="/users" method="post">
+            <div class="input_wrapper">
+                <label for="name">이름</label>
+                <input id="name" placeholder="이름을 입력하세요.." name="name" value="${requestScope.name == "" ? "" : requestScope.name}" />
+            </div>
+            <div class="input_wrapper">
+                <label for="role">권한</label>
+                <select name="role" id="role" form="sidemenuForm">
+                    <option value="NONE" ${requestScope.role.equals("NONE") ? "selected" : ""} >
+                        전체
+                    </option>
+                    <option value="USER" ${requestScope.role.equals("USER") ? "selected" : ""} >
+                        일반 유저
+                    </option>
+                    <option value="ADMIN" ${requestScope.role.equals("ADMIN") ? "selected" : ""} >
+                        관리자
+                    </option>
+                </select>
+            </div>
+            <input type="submit" value="검색하기" class="submit"/>
+            <button class="reset_button">조건 초기화</button>
+        </form>
     <div class="table_wrapper">
         <table class="users_table">
             <thead>
@@ -137,6 +137,7 @@
     </div>
 </main>
 <script src="./js/utils/logout.js"></script>
+<script src="./js/utils/reset_conditions.js"></script>
 <script src="./js/utils/modal.js"></script>
 <script src="./js/common/users.js"></script>
 

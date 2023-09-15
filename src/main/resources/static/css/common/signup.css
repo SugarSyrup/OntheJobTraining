@@ -8,6 +8,8 @@
     cursor:pointer;
 }
 
-input.submit_button {
-    margin-top:50px;
+.errmsg {
+    width: 460px;
+    overflow-wrap:break-word;
+    text-align:center;
 }

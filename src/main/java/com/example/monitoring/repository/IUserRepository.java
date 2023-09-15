@@ -17,6 +17,8 @@ public interface IUserRepository {
     List<User> findUsersByNameNRole(String name, Role role);
     List<User> findAll();
 
+    boolean findDuplicatedEmail(String email);
+
     //INSERT INTO
     boolean save(User user);    /* Sign-Up */
 

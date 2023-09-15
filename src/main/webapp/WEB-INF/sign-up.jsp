@@ -17,15 +17,15 @@
         <form class="login_wrapper" action="/sign-up" method="post">
             <div class="input_wrapper">
                 <label for="email">Email</label>
-                <input type="text" placeholder="이메일을 입력해주세요..." id="email" name="email" value="${ requestScope.UserInfo == null ? "" : requestScope.UserInfo.getEmail()}" required />
+                <input type="text" placeholder="이메일을 입력해주세요..." id="email" name="email" value="${ requestScope.UserInfo == null ? "" : requestScope.UserInfo.getEmail()}" required <%=request.getAttribute("focus") == "email" ? "autofocus" : ""%>/>
             </div>
             <div class="input_wrapper">
                 <label for="password">Password</label>
-                <input type="password" placeholder="비밀번호를 입력해주세요..." id="password" name="password" required value="${ requestScope.UserInfo == null ? "" : requestScope.UserInfo.getPassword()}" />
+                <input type="password" placeholder="비밀번호를 입력해주세요..." id="password" name="password" required value="${ requestScope.UserInfo == null ? "" : requestScope.UserInfo.getPassword()}" <%=request.getAttribute("focus") == "password" ? "autofocus" : ""%>/>
             </div>
             <div class="input_wrapper">
                 <label for="password_check">Password Check</label>
-                <input type="password" placeholder="비밀번호를 다시한번 입력해주세요..." id="password_check" name="password_check" required value="${ requestScope.password_check == null ? "" : requestScope.password_check}" />
+                <input type="password" placeholder="비밀번호를 다시한번 입력해주세요..." id="password_check" name="password_check" required value="${ requestScope.password_check == null ? "" : requestScope.password_check}" <%=request.getAttribute("focus") == "password_check" ? "autofocus" : ""%>/>
             </div>
             <div class="input_wrapper">
                 <label for="name">Name</label>

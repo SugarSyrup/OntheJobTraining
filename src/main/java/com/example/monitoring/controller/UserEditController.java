@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +22,10 @@ public class UserEditController {
     @GetMapping("/user-edit")
     public String GetUserEdit(HttpServletRequest req) {
         HttpSession session = req.getSession();
+
+        ServletContext servCon = req.getServletContext();
+        servCon.setAttribute("modalID", "");
+
         User user = userService.findUserByKey((String) session.getAttribute("id"));
 
         if(user == null) {

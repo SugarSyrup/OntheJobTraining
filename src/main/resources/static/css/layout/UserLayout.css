@@ -61,7 +61,7 @@ body{
     background-color: var(--grey);
     padding: 10px 20px;
     width: 500px;
-    height: 50px;
+    height: 60px;
 }
 
 .input_wrapper input::placeholder {

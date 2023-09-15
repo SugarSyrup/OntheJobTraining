@@ -1,10 +1,8 @@
 package com.example.monitoring.controller;
 
-import ch.qos.logback.core.pattern.util.RegularEscapeUtil;
-import com.example.monitoring.domain.ResponseMesssage;
+import com.example.monitoring.domain.ResponseMessage;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.service.UserService;
-import org.apache.coyote.Response;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +23,7 @@ public class SignUpController extends HttpServlet {
     @GetMapping("/sign-up")
     public String getIndex(HttpServletRequest req) {
         HttpSession session = req.getSession();
-        if(session.isNew() || session.getAttribute("id") == null) {
+        if (session.isNew() || session.getAttribute("id") == null) {
             return "sign-up";
         } else {
             return "main";
@@ -47,16 +45,19 @@ public class SignUpController extends HttpServlet {
         user.setName(name);
         user.setPassword(password);
 
-        ResponseMesssage msg = new ResponseMesssage();
+        ResponseMessage msg = new ResponseMessage();
         if (!Pattern.matches(REGEXP_EMAIL, email)) {
-           msg.setOk(false);
-           msg.setMessage("이메일 형식이 잘못 되었습니다");
-        } else if(!password_check.equals(password)) {
+            msg.setOk(false);
+            msg.setMessage("이메일 형식이 잘못 되었습니다");
+            req.setAttribute("focus", "email");
+        } else if (!password_check.equals(password)) {
             msg.setOk(false);
             msg.setMessage("비밀번호를 똑같이 입력해야 합니다.");
-        } else if(!Pattern.matches(REGEXP_PASSWORD, password)) {
+            req.setAttribute("focus", "password_check");
+        } else if (!Pattern.matches(REGEXP_PASSWORD, password)) {
             msg.setOk(false);
             msg.setMessage("비밀번호는 최소 8자리에서 최대 16자리 숫자,영문,특수문자를 포함해야 합니다.");
+            req.setAttribute("focus", "password");
         } else {
             msg = userService.createUser(user);
         }
@@ -65,7 +66,7 @@ public class SignUpController extends HttpServlet {
         req.setAttribute("password_check", password_check);
         req.setAttribute("Message", msg);
 
-        if(msg.getOk()) {
+        if (msg.getOk()) {
             return "login";
         } else {
             return "sign-up";

@@ -1,10 +1,9 @@
 package com.example.monitoring.service;
 
-import com.example.monitoring.domain.ResponseMesssage;
+import com.example.monitoring.domain.ResponseMessage;
 import com.example.monitoring.domain.Role;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.repository.IUserRepository;
-import org.apache.coyote.Response;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,9 +15,9 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseMesssage createUser(User user) {
+    public ResponseMessage createUser(User user) {
         boolean result = userRepository.save(user);
-        ResponseMesssage msg = new ResponseMesssage();
+        ResponseMessage msg = new ResponseMessage();
 
         if(result) {
             msg.setOk(true);
@@ -31,9 +30,9 @@ public class UserService {
         return msg;
     }
 
-    public ResponseMesssage findUserByEmail(String email, String password) {
+    public ResponseMessage findUserByEmail(String email, String password) {
         Optional<User> result = userRepository.findByEmail(email);
-        ResponseMesssage msg = new ResponseMesssage();
+        ResponseMessage msg = new ResponseMessage();
         if(result.isPresent()){
             User user = result.orElseGet(() -> new User());
             if(user.getPassword().equals(password)) {
@@ -70,6 +69,10 @@ public class UserService {
         return userRepository.findUsersByNameNRole(name, role);
     }
 
+    public boolean findDuplicatedEmail(String email) {
+        return userRepository.findDuplicatedEmail(email);
+    }
+
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -87,7 +90,9 @@ public class UserService {
         userRepository.deleteUserByKey(key);
     }
 
-    public void updateUserRole(String key, Role role) {
-        userRepository.updateUserRoleByKey(key, role);
+    public void updateUserRole(String key, String role) {
+        Role updateRole = Role.valueOf(role);
+
+        userRepository.updateUserRoleByKey(key, updateRole);
     }
 }

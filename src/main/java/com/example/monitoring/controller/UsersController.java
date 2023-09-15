@@ -1,5 +1,7 @@
 package com.example.monitoring.controller;
 
+import com.example.monitoring.domain.EquipmentNameCheck;
+import com.example.monitoring.domain.ResponseMessage;
 import com.example.monitoring.domain.Role;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.service.UserService;
@@ -8,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -21,7 +24,6 @@ public class UsersController {
     private String role;
 
     public UsersController(UserService userService) {
-        System.out.println("Contorller starts");
         this.userService = userService;
         this.name = "";
         this.role = "NONE";
@@ -31,6 +33,9 @@ public class UsersController {
     @GetMapping("/users")
     public String GetUsers(HttpServletRequest req) {
         HttpSession session = req.getSession();
+
+        ServletContext servCon = req.getServletContext();
+        servCon.setAttribute("modalID", "");
 
         if(role.equals("NONE")) {
             this.users = userService.findUsersByName(name);
@@ -82,9 +87,17 @@ public class UsersController {
     public String UserRoleChange(HttpServletRequest req) {
         String role = req.getParameter("role");
         String user_no = req.getParameter("user_no");
-        Role userRole = Role.valueOf(role);
 
-        userService.updateUserRole(user_no, userRole);
+        userService.updateUserRole(user_no, role);
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/api/users/reset")
+    public String PostReset(HttpServletRequest req) {
+        this.name = "";
+        this.role = "NONE";
+        this.users = new ArrayList<User>(userService.getUsers());
 
         return "redirect:/users";
     }
