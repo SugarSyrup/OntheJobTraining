@@ -30,12 +30,14 @@ public class LoginController{
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
-        ResponseMessage msg = userService.findUserByEmail(email, password);
+        ResponseMessage msg = userService.login(email, password);
         req.setAttribute("Message", msg);
 
         if(msg.getOk()) {
             HttpSession session = req.getSession();
             session.setAttribute("id", msg.getMessage());
+            boolean isAdmin = userService.findAdminById(msg.getMessage());
+            session.setAttribute("isAdmin", isAdmin);
 
             return "redirect:/main";
         } else {

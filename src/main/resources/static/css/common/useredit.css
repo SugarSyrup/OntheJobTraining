@@ -60,3 +60,19 @@
 .modal_btn:nth-child(2) {
     background-color:var(--red);
 }
+
+.errmsg {
+    overflow-wrap:break-word;
+    text-align:center;
+}
+
+.position_relative {
+    position:relative;
+}
+
+.announcement {
+    position:absolute;
+    font-weight:bolder;
+    right:10px;
+    top:5px;
+}

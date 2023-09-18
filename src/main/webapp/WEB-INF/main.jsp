@@ -18,9 +18,11 @@
         <a href="/equipment"  class="equipment_link">
             <span class="link">장비</span>
         </a>
+        <% if((Boolean) session.getAttribute("isAdmin")) { %>
         <a href="/users"  class="users_link">
             <span class="link">유저관리</span>
         </a>
+        <% } %>
         <a href="/user-edit">
             <span class="link">개인정보</span>
         </a>
@@ -32,7 +34,6 @@
     <main>
 
     </main>
-    <script src="./js/utils/header.js"></script>
     <script src="./js/utils/logout.js"></script>
 </body>
 </html>

@@ -32,11 +32,11 @@ public class SignUpController extends HttpServlet {
 
     @PostMapping("/sign-up")
     public String postSignup(HttpServletRequest req) {
-
         String email = req.getParameter("email");
+        String name = req.getParameter("name");
         String password = req.getParameter("password");
         String password_check = req.getParameter("password_check");
-        String name = req.getParameter("name");
+
         String REGEXP_EMAIL = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
         String REGEXP_PASSWORD = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$";
 
@@ -59,7 +59,7 @@ public class SignUpController extends HttpServlet {
             msg.setMessage("비밀번호는 최소 8자리에서 최대 16자리 숫자,영문,특수문자를 포함해야 합니다.");
             req.setAttribute("focus", "password");
         } else {
-            msg = userService.createUser(user);
+            msg = userService.signup(user);
         }
 
         req.setAttribute("UserInfo", user);

@@ -4,6 +4,8 @@ import com.example.monitoring.domain.ResponseMessage;
 import com.example.monitoring.domain.Role;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.repository.IUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,11 +13,15 @@ import java.util.Optional;
 public class UserService {
     private final IUserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UserService(IUserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public ResponseMessage createUser(User user) {
+    public ResponseMessage signup(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         boolean result = userRepository.save(user);
         ResponseMessage msg = new ResponseMessage();
 
@@ -30,12 +36,12 @@ public class UserService {
         return msg;
     }
 
-    public ResponseMessage findUserByEmail(String email, String password) {
+    public ResponseMessage login(String email, String password) {
         Optional<User> result = userRepository.findByEmail(email);
         ResponseMessage msg = new ResponseMessage();
         if(result.isPresent()){
             User user = result.orElseGet(() -> new User());
-            if(user.getPassword().equals(password)) {
+            if(passwordEncoder.matches(password, user.getPassword())) {
                 msg.setMessage(Integer.toString(user.getUserNo()));
                 msg.setOk(true);
             }
@@ -49,6 +55,20 @@ public class UserService {
         }
 
         return msg;
+    }
+
+    public boolean findAdminById(String id) {
+        Optional<User> result = userRepository.findByKey(id);
+        if(result.isPresent()) {
+            User user = result.orElseGet(() -> new User());
+            if(Role.ADMIN.equals(user.getRole())){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public User findUserByKey(String key) {
@@ -78,6 +98,7 @@ public class UserService {
     }
 
     public boolean updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         boolean result = userRepository.updateUserByUniqueKey(user);
 
         if(result) {

@@ -37,6 +37,10 @@ public class UsersController {
         ServletContext servCon = req.getServletContext();
         servCon.setAttribute("modalID", "");
 
+        if(!(Boolean) session.getAttribute("isAdmin")){
+            return "redirect:/";
+        }
+
         if(role.equals("NONE")) {
             this.users = userService.findUsersByName(name);
         }

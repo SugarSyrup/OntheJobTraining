@@ -28,9 +28,10 @@
 
     <% if(session.getAttribute("id")!=null) { %>
     <form class="login_wrapper" action="/user-edit" method="post">
-        <div class="input_wrapper">
+        <div class="input_wrapper position_relative">
             <label for="email">Email</label>
             <input type="text" placeholder="이메일을 입력해주세요..." id="email" name="email" value=<%=request.getAttribute("email")%> required readonly/>
+            <span class="announcement">* 수정불가</span>
         </div>
         <div class="input_wrapper">
             <label for="password">Password</label>
