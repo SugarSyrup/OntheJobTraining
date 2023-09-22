@@ -77,56 +77,84 @@ const DetailBtns = document.querySelectorAll('.detailButton');
 const DetailOverlay = document.querySelector('.modal_wrapper');
 const DetailModalNo = document.querySelector('.detail_modal_no');
 
+const startInterval = (callback) => {
+    console.log("callback work");
+    callback();
+    let returnValue;
+    const intervalCheck = setInterval(() => {
+        const date = new Date();
+        console.log("interval Check");
+        if (date.getMinutes() % 5 === 0) {
+            callback();
+            returnValue = setInterval(callback, 1000 * 60 * 5);
+            clearInterval(intervalCheck);
+        }
+        DetailModalNo.addEventListener('click', () => {clearInterval(intervalCheck)});
+    }, 1000);
+
+    return returnValue;
+}
+
 DetailBtns.forEach((detailBtn) => {
     Modal(detailBtn, DetailOverlay, DetailModalNo);
+    modalCurrent = detailBtn.dataset.id.substring(0,10);
+
+    let scheduledFunc;
+
     detailBtn.addEventListener('click', () => {
-        modalCurrent = detailBtn.dataset.id.substring(0,10);
-        fetch(`http://${window.location.host}/main/info`, {
-            method:'POST',
-            headers: {
-                'Content-Type' : 'application/json',
-            },
-            body: JSON.stringify({
-                date: modalCurrent
-            })
-        }).then((response) => {
-            return response.json();
-        }).then((data) => {
-            const hourSelect = document.querySelector('.hourSelect');
-            google.setOnLoadCallback(drawChart2(data));
+        scheduledFunc = startInterval( () => {
+            let date = new Date();
 
-            document.querySelector('.modalTBody').innerHTML = "";
-            for(let i = 0; i < 12; i++) {
-                const TR = document.createElement('tr');
-                TR.innerHTML = `
-                        <td>${data[i].date.substring(14,16)}분</td>
-                        <td>${data[i].value}</td>
-                    `;
-                document.querySelector('.modalTBody').appendChild(TR);
-            }
+            fetch(`http://${window.location.host}/main/info`, {
+                    method:'POST',
+                    headers: {
+                        'Content-Type' : 'application/json',
+                    },
+                    body: JSON.stringify({
+                        date: modalCurrent
+                    })
+                }).then((response) => {
+                    return response.json();
+                }).then((data) => {
+                const hourSelect = document.querySelector('.hourSelect');
+                google.setOnLoadCallback(drawChart2(data));
 
-            hourSelect.innerHTML = "";
-            for(let i = 0; i < data.length/12; i++) {
-                const Option = document.createElement('option');
-                Option.value = i + "";
-                Option.innerText = `${i}시`;
-                hourSelect.appendChild(Option);
-            }
-
-            hourSelect.addEventListener('change', (e) => {
-                document.querySelector('.hourSelectedTime').innerText = `${e.currentTarget.value} 시`;
                 document.querySelector('.modalTBody').innerHTML = "";
-                for(let i = e.currentTarget.value * 12; i < e.currentTarget.value * 12 +12; i++) {
-                    const TR = document.createElement('tr');
-                    TR.innerHTML = `
+                for(let i = 0; i < 12; i++) {
+                        const TR = document.createElement('tr');
+                        TR.innerHTML = `
                         <td>${data[i].date.substring(14,16)}분</td>
                         <td>${data[i].value}</td>
                     `;
-                    document.querySelector('.modalTBody').appendChild(TR);
-                }
-            })
-        }).catch((error) => {
-            console.log(error);
-        })
-    })
-})
+                        document.querySelector('.modalTBody').appendChild(TR);
+                    }
+
+                hourSelect.innerHTML = "";
+                for(let i = 0; i < data.length/12; i++) {
+                        const Option = document.createElement('option');
+                        Option.value = i + "";
+                        Option.innerText = `${i}시`;
+                        hourSelect.appendChild(Option);
+                    }
+
+                hourSelect.addEventListener('change', (e) => {
+                        document.querySelector('.hourSelectedTime').innerText = `${e.currentTarget.value} 시`;
+                        document.querySelector('.modalTBody').innerHTML = "";
+                        for(let i = e.currentTarget.value * 12; i < e.currentTarget.value * 12 +12; i++) {
+                            const TR = document.createElement('tr');
+                            TR.innerHTML = `
+                            <td>${data[i].date.substring(14,16)}분</td>
+                            <td>${data[i].value}</td>
+                        `;
+
+                            document.querySelector('.modalTBody').appendChild(TR);
+                        }
+                    })
+            }).catch((error) => {
+                    console.log(error);
+                })
+
+        });
+    });
+    DetailModalNo.addEventListener('click', () => {clearInterval(scheduledFunc)});
+});

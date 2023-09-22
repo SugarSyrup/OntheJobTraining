@@ -5,6 +5,7 @@ import com.example.monitoring.domain.TemperatureStaticsVO;
 import com.example.monitoring.repository.EquipementRepository;
 import com.example.monitoring.service.EquipmentService;
 import com.example.monitoring.service.StaticsService;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -96,6 +97,7 @@ public class MainController {
     @PostMapping("/main/info")
     public List<Temperature> postInfo(HttpServletRequest req, @RequestBody Temperature temperatureVO)  throws Exception {
         List<Temperature> _tmp = staticsService.getDateInfo(this.division,temperatureVO.getDate());
+        System.out.println("post worked");
         System.out.println(_tmp);
         return _tmp;
     };
