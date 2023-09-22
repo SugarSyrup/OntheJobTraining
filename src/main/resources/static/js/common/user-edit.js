@@ -27,23 +27,27 @@ const passwordCheckValue = document.querySelector("#password_check");
 const editForm = document.querySelector('.login_wrapper');
 
 editForm.addEventListener('submit', (e) => {
-    const PASSWORD_REGEXP = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$");
-    if(!PASSWORD_REGEXP.test(passwordValue.value)) {
-        e.preventDefault();
-        document.querySelector('.errmsg').innerText = "비밀번호는 최소 8자리에서 최대 16자리 숫자,영문,특수문자를 포함해야 합니다.";
-        passwordValue.addEventListener('input', (e) => {
-            if(PASSWORD_REGEXP.test(passwordValue.value)) {
-                document.querySelector('.errmsg').innerText = "";
-            }
-        })
-    }
-    else if(passwordValue.value !== passwordCheckValue.value) {
-        e.preventDefault();
-        document.querySelector('.errmsg').innerText = "비밀번호는 반드시 일치해야 합니다.";
-        passwordCheckValue.addEventListener('input', (e) => {
-            if(passwordValue.value === passwordCheckValue.value) {
-                document.querySelector('.errmsg').innerText = "";
-            }
-        })
+    if(passwordValue.value == "") {
+
+    } else {
+        const PASSWORD_REGEXP = new RegExp("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,16}$");
+
+        if (!PASSWORD_REGEXP.test(passwordValue.value)) {
+            e.preventDefault();
+            document.querySelector('.errmsg').innerText = "비밀번호는 최소 8자리에서 최대 16자리 숫자,영문,특수문자를 포함해야 합니다.";
+            passwordValue.addEventListener('input', (e) => {
+                if (PASSWORD_REGEXP.test(passwordValue.value)) {
+                    document.querySelector('.errmsg').innerText = "";
+                }
+            })
+        } else if (passwordValue.value !== passwordCheckValue.value) {
+            e.preventDefault();
+            document.querySelector('.errmsg').innerText = "비밀번호는 반드시 일치해야 합니다.";
+            passwordCheckValue.addEventListener('input', (e) => {
+                if (passwordValue.value === passwordCheckValue.value) {
+                    document.querySelector('.errmsg').innerText = "";
+                }
+            })
+        }
     }
 })

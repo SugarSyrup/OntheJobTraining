@@ -2,6 +2,7 @@ package com.example.monitoring.repository;
 
 import com.example.monitoring.domain.Role;
 import com.example.monitoring.domain.User;
+import lombok.Cleanup;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.sql.DataSource;
@@ -19,24 +20,19 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public boolean save(User user) {
+    public boolean save(User user) throws Exception {
         String sql = "INSERT INTO user(email, PASSWORD, NAME) VALUES (?, ?, ?);";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getEmail());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
+        @Cleanup Connection conn = null;
+        @Cleanup PreparedStatement pstmt = null;
 
-            pstmt.executeQuery();
-            return true;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt);
-        }
+        conn = getConnection();
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, user.getEmail());
+        pstmt.setString(2, user.getPassword());
+        pstmt.setString(3, user.getName());
+
+        pstmt.executeQuery();
+        return true;
     }
 
     @Override

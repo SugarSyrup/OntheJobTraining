@@ -20,7 +20,7 @@ public interface IUserRepository {
     boolean findDuplicatedEmail(String email);
 
     //INSERT INTO
-    boolean save(User user);    /* Sign-Up */
+    boolean save(User user) throws Exception ;    /* Sign-Up */
 
     //UPDATE
     boolean updateUserByUniqueKey(User user);/* User-Edit POST */

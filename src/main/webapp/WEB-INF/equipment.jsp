@@ -185,8 +185,7 @@
                         List<String> LOCATIONS_LIST = (List<String>) request.getAttribute("equipment_locations");
                         for(String locationElement : LOCATIONS_LIST) {
                     %>
-                    <%= locationElement %>
-                    <option value=<%= locationElement %> <%= request.getAttribute("location").equals(locationElement) ? "selected" : ""%> >
+                    <option value="<%= locationElement %>" <%= request.getAttribute("location").equals(locationElement) ? "selected" : ""%> >
                         <%= locationElement %>
                     </option>
                     <% } %>

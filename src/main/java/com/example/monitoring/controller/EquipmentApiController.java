@@ -12,6 +12,7 @@ import java.util.Map;
 public class EquipmentApiController {
     EquipmentService equipmentService;
 
+
     public EquipmentApiController(EquipmentService equipmentService) {
         this.equipmentService = equipmentService;
     }
@@ -33,7 +34,7 @@ public class EquipmentApiController {
     @ResponseBody
     public Map<String, Boolean> DuplicatedCheck(HttpServletRequest req, @RequestBody Equipment equipment) {
         String name = equipment.getName();
-        System.out.println("name : " + equipment);
+
         Map<String, Boolean> resultMap = new HashMap<String, Boolean>();
         boolean flag = equipmentService.findDuplicatedName(name);
         resultMap.put("flag", flag);

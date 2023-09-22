@@ -48,8 +48,8 @@ public class EquipementRepository implements IEquipementRepository{
         }
     }
 
-    public List<Equipment> findAllByName(String name){
-        String sql = "SELECT * FROM equipment WHERE name LIKE ?";
+    public List<Equipment> findAllByConditions(Equipment equipment){
+        String sql = "SELECT * FROM equipment WHERE name LIKE ? AND location LIKE ? AND division LIKE ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -57,18 +57,21 @@ public class EquipementRepository implements IEquipementRepository{
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,"%" + name + "%");
+            pstmt.setString(1,"%" + equipment.getName() + "%");
+            pstmt.setString(2,"%" + (equipment.getLocation().equals("NONE") ? "" : equipment.getLocation()) + "%");
+            pstmt.setString(3,"%" + (equipment.getDivision().equals("NONE") ? "" : equipment.getDivision()) + "%");
+
             rs = pstmt.executeQuery();
 
             List<Equipment> equipments = new ArrayList<Equipment>();
             while(rs.next()) {
-                Equipment equipment = new Equipment();
-                equipment.setName(rs.getString("name"));
-                equipment.setDivision(rs.getString("division"));
-                equipment.setLocation(rs.getString("location"));
-                equipment.setRegist_date(rs.getString("regist_date"));
+                Equipment _equipment = new Equipment();
+                _equipment.setName(rs.getString("name"));
+                _equipment.setDivision(rs.getString("division"));
+                _equipment.setLocation(rs.getString("location"));
+                _equipment.setRegist_date(rs.getString("regist_date"));
 
-                equipments.add(equipment);
+                equipments.add(_equipment);
             }
 
             return equipments;
@@ -106,101 +109,6 @@ public class EquipementRepository implements IEquipementRepository{
         }
     }
 
-    public List<Equipment> findAllByNameNLocation(String location, String name){
-        String sql = "SELECT * FROM equipment WHERE name LIKE ? AND location = ?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,"%" + name + "%");
-            pstmt.setString(2,location);
-            rs = pstmt.executeQuery();
-
-            List<Equipment> equipments = new ArrayList<Equipment>();
-            while(rs.next()) {
-                Equipment equipment = new Equipment();
-                equipment.setName(rs.getString("name"));
-                equipment.setDivision(rs.getString("division"));
-                equipment.setLocation(rs.getString("location"));
-                equipment.setRegist_date(rs.getString("regist_date"));
-
-                equipments.add(equipment);
-            }
-
-            return equipments;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt, rs);
-        }
-    }
-    public List<Equipment> findAllByNameNDivision(String division, String name){
-        String sql = "SELECT * FROM equipment WHERE name LIKE ? AND division LIKE ?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,"%" + name + "%");
-            pstmt.setString(2,"%" + division + "%");
-            rs = pstmt.executeQuery();
-
-            List<Equipment> equipments = new ArrayList<Equipment>();
-            while(rs.next()) {
-                Equipment equipment = new Equipment();
-                equipment.setName(rs.getString("name"));
-                equipment.setDivision(rs.getString("division"));
-                equipment.setLocation(rs.getString("location"));
-                equipment.setRegist_date(rs.getString("regist_date"));
-
-                equipments.add(equipment);
-            }
-
-            return equipments;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt, rs);
-        }
-    }
-    public List<Equipment> findAllByAllConditions(String location, String division, String name){
-        String sql = "SELECT * FROM equipment WHERE name LIKE ? AND location = ? AND division LIKE ?";
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = getConnection();
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,"%" + name + "%");
-            pstmt.setString(2,location);
-            pstmt.setString(3,"%" + division + "%");
-            rs = pstmt.executeQuery();
-
-            List<Equipment> equipments = new ArrayList<Equipment>();
-            while(rs.next()) {
-                Equipment equipment = new Equipment();
-                equipment.setName(rs.getString("name"));
-                equipment.setDivision(rs.getString("division"));
-                equipment.setLocation(rs.getString("location"));
-                equipment.setRegist_date(rs.getString("regist_date"));
-
-                equipments.add(equipment);
-            }
-
-            return equipments;
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        } finally {
-            close(conn, pstmt, rs);
-        }
-    }
-
     public List<String> findLocations() {
         String sql = "SELECT DISTINCT location FROM equipment ORDER BY location ASC";
         Connection conn = null;
@@ -210,6 +118,32 @@ public class EquipementRepository implements IEquipementRepository{
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
+            rs = pstmt.executeQuery();
+
+            List<String> locations = new ArrayList<String>();
+            while(rs.next()) {
+                locations.add(rs.getString("location"));
+            }
+
+            return locations;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        } finally {
+            close(conn, pstmt, rs);
+        }
+    }
+
+    public List<String> findLocations(String division) {
+        String sql = "SELECT DISTINCT location FROM equipment WHERE division LIKE ? ORDER BY location ASC";
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = getConnection();
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, "%" + division + "%");
+
             rs = pstmt.executeQuery();
 
             List<String> locations = new ArrayList<String>();
@@ -253,7 +187,7 @@ public class EquipementRepository implements IEquipementRepository{
         String sql = "INSERT INTO equipment(name, location, division) VALUES (?, ?, ?);";
         Connection conn = null;
         PreparedStatement pstmt = null;
-        System.out.println(equipment);
+
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
@@ -273,7 +207,7 @@ public class EquipementRepository implements IEquipementRepository{
         String sql = "UPDATE equipment SET name=?, location=?, division=? WHERE name=?";
         Connection conn = null;
         PreparedStatement pstmt = null;
-        System.out.println(equipment);
+
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);

@@ -31,7 +31,7 @@ public class SignUpController extends HttpServlet {
     }
 
     @PostMapping("/sign-up")
-    public String postSignup(HttpServletRequest req) {
+    public String postSignup(HttpServletRequest req) throws Exception {
         String email = req.getParameter("email");
         String name = req.getParameter("name");
         String password = req.getParameter("password");

@@ -21,22 +21,18 @@ public class EquipmentService {
         return equipmentRepository.findLocations();
     }
 
+    public List<String> findLocations(String division) {
+            return equipmentRepository.findLocations(division);
+    }
+
     public List<Equipment> findEquipments(String division, String location, String name) {
         List<Equipment> equipments = new ArrayList<Equipment>();
-        if (division.equals("NONE")) {
-            if (location.equals("NONE")) {
-                equipments = equipmentRepository.findAllByName(name);
-            } else {
-                equipments = equipmentRepository.findAllByNameNLocation(location, name);
-            }
-        } else {
-            if (location.equals("NONE")) {
-                equipments = equipmentRepository.findAllByNameNDivision(division, name);
-            } else {
-                equipments = equipmentRepository.findAllByAllConditions(location, division, name);
-            }
-        }
+        Equipment equipment = new Equipment();
+        equipment.setName(name);
+        equipment.setLocation(location);
+        equipment.setDivision(division);
 
+        equipments = equipmentRepository.findAllByConditions(equipment);
         return equipments;
     }
 

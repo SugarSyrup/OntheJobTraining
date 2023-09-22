@@ -1,10 +1,8 @@
 package com.example.monitoring;
 
-import com.example.monitoring.repository.EquipementRepository;
-import com.example.monitoring.repository.IEquipementRepository;
-import com.example.monitoring.repository.IUserRepository;
-import com.example.monitoring.repository.UserRepository;
+import com.example.monitoring.repository.*;
 import com.example.monitoring.service.EquipmentService;
+import com.example.monitoring.service.StaticsService;
 import com.example.monitoring.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,11 +24,15 @@ public class SpringConfig {
     @Bean
     public EquipmentService equipmentService() { return new EquipmentService(equipmentRepository()); }
 
+    @Bean
+    public StaticsService staticsService() { return new StaticsService(staticsRepository()); }
+
     public IUserRepository userRepository() {
         return new UserRepository(dataSource);
     }
 
-    public IEquipementRepository equipmentRepository() { return new EquipementRepository(dataSource);
-    }
+    public IEquipementRepository equipmentRepository() { return new EquipementRepository(dataSource); }
+
+    public IStaticsRepository staticsRepository() { return new StaticsRepository(dataSource); }
 
 }

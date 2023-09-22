@@ -62,6 +62,7 @@
 }
 
 .errmsg {
+    width:500px;
     overflow-wrap:break-word;
     text-align:center;
 }

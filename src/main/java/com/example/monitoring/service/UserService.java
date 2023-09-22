@@ -20,7 +20,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public ResponseMessage signup(User user) {
+    public ResponseMessage signup(User user) throws Exception {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         boolean result = userRepository.save(user);
         ResponseMessage msg = new ResponseMessage();

@@ -24,7 +24,7 @@ public class EquipmentController {
 
     public EquipmentController(EquipmentService equipmentService) {
         this.equipmentService = equipmentService;
-        this.equipments = equipmentService.findAll();
+        this.equipments = equipmentService.findEquipments("","","");
         this.division = "";
         this.location = "";
         this.name = "";
@@ -33,8 +33,7 @@ public class EquipmentController {
 
     @GetMapping("/equipment")
     public String GetEquipment(HttpServletRequest req) {
-        this.equipments = equipmentService.findAll();
-
+        this.equipments = equipmentService.findEquipments(division, location, name);
         req.setAttribute("equipment_locations", equipmentService.findLocations());
         req.setAttribute("division", this.division);
         req.setAttribute("equipments", this.equipments);
@@ -50,7 +49,6 @@ public class EquipmentController {
         this.division = req.getParameter("division");
         this.location = req.getParameter("location");
         this.name = req.getParameter("name");
-
 
         this.equipments = equipmentService.findEquipments(division, location, name);
 
