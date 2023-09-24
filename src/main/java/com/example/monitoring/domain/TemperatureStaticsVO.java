@@ -15,6 +15,7 @@ public class TemperatureStaticsVO {
     private float MAX;
     private float MIN;
     private String date;
+    private String location;
 
     public String toString() {
         return "[" +
@@ -23,6 +24,7 @@ public class TemperatureStaticsVO {
                 this.MAX + "," +
                 this.MIN + "," +
                 this.date + "," +
+                this.location + "," +
                 "],";
     }
 }

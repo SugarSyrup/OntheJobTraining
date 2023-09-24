@@ -30,8 +30,8 @@ public class StaticsRepository implements IStaticsRepository{
 
          conn = getConnection();
          pstmt = conn.prepareStatement(sql);
-         pstmt.setString(1, startDate.equals("") ? "2023-08-01" : startDate);
-         pstmt.setString(2, endDate.equals("") ? "2023-08-07" : endDate);
+        pstmt.setString(1, startDate.equals("") ? "2000-01-01" : startDate);
+        pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
          pstmt.setString(3, "%" + name + "%");
          pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
 
@@ -46,7 +46,8 @@ public class StaticsRepository implements IStaticsRepository{
                      Float.parseFloat(String.format("%.2f",rs.getFloat("AVG"))),
                      rs.getFloat("MAX"),
                      rs.getFloat("MIN"),
-                     rs.getString("DATE")
+                     rs.getString("DATE"),
+                     rs.getString("location")
              );
              temperatureStaticsVOList.add(temperatureStatic);
          }
@@ -63,8 +64,8 @@ public class StaticsRepository implements IStaticsRepository{
 
         conn = getConnection();
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, startDate.equals("") ? "2023-08-01" : startDate);
-        pstmt.setString(2, endDate.equals("") ? "2023-08-07" : endDate);
+        pstmt.setString(1, startDate.equals("") ? "2000-01-01" : startDate);
+        pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
         pstmt.setString(3, "%" + name + "%");
         pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
 
@@ -79,13 +80,69 @@ public class StaticsRepository implements IStaticsRepository{
                     Float.parseFloat(String.format("%.2f",rs.getFloat("AVG"))),
                     rs.getFloat("MAX"),
                     rs.getFloat("MIN"),
-                    rs.getString("DATE")
+                    rs.getString("DATE"),
+                    rs.getString("location")
             );
             temperatureStaticsVOList.add(temperatureStatic);
         }
 
         return temperatureStaticsVOList;
     }
+
+
+    public List<String> getTemperatureEquipmentsList(String location, String name, String startDate, String endDate) throws Exception{
+        String sql = "SELECT DISTINCT equipment.name FROM temperature_statics LEFT JOIN equipment ON temperature_statics.temperature_equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ?";
+
+        @Cleanup Connection conn = null;
+        @Cleanup PreparedStatement pstmt = null;
+        @Cleanup ResultSet rs = null;
+
+        conn = getConnection();
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, startDate.equals("") ? "2000-01-01" : startDate);
+        pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
+        pstmt.setString(3, "%" + name + "%");
+        pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
+
+        System.out.println(pstmt);
+
+        rs = pstmt.executeQuery();
+
+        List<String> equipments = new ArrayList<String>();
+        while(rs.next()) {
+            equipments.add(rs.getString("name"));
+        }
+
+        return equipments;
+
+    }
+
+    public List<String> getHumidityEquipmentsList(String location, String name, String startDate, String endDate) throws Exception{
+        String sql = "SELECT DISTINCT equipment.name FROM humidity_statics LEFT JOIN equipment ON humidity_statics.humidity_equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ?";
+
+        @Cleanup Connection conn = null;
+        @Cleanup PreparedStatement pstmt = null;
+        @Cleanup ResultSet rs = null;
+
+        conn = getConnection();
+        pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, startDate.equals("") ? "2000-01-01" : startDate);
+        pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
+        pstmt.setString(3, "%" + name + "%");
+        pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
+
+        System.out.println(pstmt);
+
+        rs = pstmt.executeQuery();
+
+        List<String> equipments = new ArrayList<String>();
+        while(rs.next()) {
+            equipments.add(rs.getString("name"));
+        }
+
+        return equipments;
+    }
+
 
     public List<Temperature> getDateTemperatures(String date) throws Exception{
         String sql = "SELECT * FROM temperature LEFT JOIN equipment ON temperature.equipment_no = equipment.equipment_no WHERE date LIKE ?";

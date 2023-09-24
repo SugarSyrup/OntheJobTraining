@@ -57,7 +57,7 @@ public class MainController {
         req.setAttribute("humidity_locations", this.humidityLocations);
         req.setAttribute("temperature_locations", this.temperatureLocations);
         req.setAttribute("temperature_statics", staticsService.getTemperatureStatics(this.division, this.location, this.name, this.startDate, this.endDate));
-
+        req.setAttribute("equipment_list", staticsService.getEquipmentsList(this.division, this.location, this.name, this.startDate, this.endDate));
         if(session.isNew() || session.getAttribute("id") == null) {
             return "redirect:/";
         } else {

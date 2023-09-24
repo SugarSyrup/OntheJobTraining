@@ -97,6 +97,8 @@ const startInterval = (callback) => {
 
 DetailBtns.forEach((detailBtn) => {
     Modal(detailBtn, DetailOverlay, DetailModalNo);
+    document.querySelector('.modalHeader h1').innerText = detailBtn.dataset.date.substring(0,4) + "년 " + detailBtn.dataset.date.substring(5,7) + "월 " + detailBtn.dataset.date.substring(8,10) + "일";
+    document.querySelector('.modalHeader span').innerText = detailBtn.dataset.location;
     modalCurrent = detailBtn.dataset.id.substring(0,10);
 
     let scheduledFunc;
@@ -117,7 +119,8 @@ DetailBtns.forEach((detailBtn) => {
                     return response.json();
                 }).then((data) => {
                 const hourSelect = document.querySelector('.hourSelect');
-                google.setOnLoadCallback(drawChart2(data));
+                // google.setOnLoadCallback(drawChart2(data, 'detailChart'));
+                drawChart2(data, 'detailChart');
 
                 document.querySelector('.modalTBody').innerHTML = "";
                 for(let i = 0; i < 12; i++) {

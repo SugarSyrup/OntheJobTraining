@@ -11,166 +11,6 @@
     <link rel="stylesheet" href="./css/layout/MainLayout.css">
     <link rel="stylesheet" href="./css/common/main.css">
     <title>Monitoring | Main</title>
-
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
-    <script>
-        /* Draw Google Charts */
-        google.charts.load('current', {packages: ['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-        const TEMPERATURE_LIST_STRING = "<%= TEMPERATURE_LIST  %>";
-        const TEMPERATURE_LIST = TEMPERATURE_LIST_STRING.substring(1,TEMPERATURE_LIST_STRING.length-2).split(",,");
-        console.log(TEMPERATURE_LIST);
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-            let minimum = 100;
-            let maximum = -100;
-            data.addColumn('string', '날짜');
-            data.addColumn('number', '최고 기온');
-            data.addColumn('number', '평균 기온');
-            data.addColumn('number', '최저 기온');
-
-            let rows = [];
-            for(let i = 0; i < TEMPERATURE_LIST.length; i++) {
-                const TEMPERATURE_DATA = TEMPERATURE_LIST[i].split(",");
-                let row = []
-                row.push(TEMPERATURE_DATA[4].substring(0,10));
-                if(Number(TEMPERATURE_DATA[2]) > maximum) {
-                    maximum = Number(TEMPERATURE_DATA[2]);
-                }
-                row.push(Number(TEMPERATURE_DATA[2]));
-                row.push(Number(TEMPERATURE_DATA[1]));
-
-                if(Number(TEMPERATURE_DATA[3]) < minimum) {
-                    minimum = Number(TEMPERATURE_DATA[3]);
-                }
-                row.push(Number(TEMPERATURE_DATA[3]));
-                rows.push(row);
-            }
-
-            data.addRows(rows);
-
-            var options = {
-                animation:{ //animation
-                  duration:1000,
-                  easing:'inAndOut',
-                  startup:true
-                },
-                backgroundColor:'#FCF6F5',
-                chartArea: {
-                    width:'1200px',
-                    height:'800px',
-                    /*backgroundColor:{
-                        stroke:"black",
-                        strokeWidth:'0 1 1 1'
-                    }*/
-                },
-                focusTarget:'category',
-                fontName:'GmarketSans',
-                hAxis: {
-                    title: '일시',
-                    gridlines: {
-                        interval:10
-                    }
-                },
-                vAxis: {
-                    title: '기온',
-                    viewWindow: {
-                        max:maximum + 5,
-                        min:minimum - 5
-                    }
-                },
-                series:{
-                    0:{
-                        color:'#FF6262',
-                        lineWidth:4
-                    },
-                    1:{
-                        color:"#6EFF62",
-                        lineWidth:4
-                    },
-                    2:{
-                        color:"#628EFF",
-                        lineWidth:4
-                    }
-                }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('myPieChart'));
-
-            chart.draw(data, options);
-        }
-
-        google.setOnLoadCallback(drawChart);
-    </script>
-
-    <script>
-        function drawChart2(server_data) {
-            var data = new google.visualization.DataTable();
-            let minimum = 100;
-            let maximum = -100;
-            data.addColumn('string', '시간');
-            data.addColumn('number', '기온');
-
-            let rows = [];
-            for(let i = 0; i < server_data.length; i++) {
-                let row = []
-                row.push(server_data[i].date.substring(11,16));
-                if(Number(server_data[i].value) > maximum) {
-                    maximum = Number(server_data[i].value);
-                }
-
-                if(Number(server_data[i].value) < minimum) {
-                    minimum = Number(server_data[i].value);
-                }
-                row.push(server_data[i].value);
-                rows.push(row);
-            }
-
-            data.addRows(rows);
-
-            var options = {
-                width:'1200px',
-                height:'700px',
-                animation:{
-                    duration:1000,
-                    easing:'inAndOut',
-                    startup:true
-                },
-                backgroundColor:'#fcfcfc',
-                chartArea: {
-                    width:'80%',
-                    height:'80%',
-                },
-                focusTarget:'category',
-                fontName:'GmarketSans',
-                hAxis: {
-                    title: '일시',
-                    showTextEvery: 36,
-                    allowContainerBoundaryTextCutoff: false,
-                },
-                vAxis: {
-                    title: '기온',
-                    viewWindow: {
-                        max:maximum + 2,
-                        min:minimum - 2
-                    }
-                },
-                series:{
-                    0:{
-                        color:"#6EFF62",
-                        lineWidth:4
-                    }
-                }
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById('detailChart'));
-
-            chart.draw(data, options);
-        }
-
-    </script>
 </head>
 <body>
 
@@ -195,7 +35,7 @@
                 <thead>
                     <tr>
                         <th class="hourSelectedTime">00시</th>
-                        <th>기온(도)</th>
+                        <th>${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}</th>
                     </tr>
                 </thead>
                 <tbody class="modalTBody">
@@ -290,40 +130,52 @@
         </form>
     </div>
     <% if (TEMPERATURE_LIST.size() > 0 ) { %>
-        <div class="content_wrapper">
-        <div class="chart_container" id="myPieChart">
+    <div class="equipmentPerWrapper">
+    <%
+        List<String> EQUIPMENT_LIST = (List<String>) request.getAttribute("equipment_list");
+        for(String equipment : EQUIPMENT_LIST) {
+    %>
+        <span> <%= equipment %> </span>
+            <div class="content_wrapper">
+                <div class="chart_container" id="<%= equipment %>">
 
-        </div>
-        <div class="table_container">
-            <table class="statics_table">
-                <thead>
-                <tr>
-                    <th>장비명</th>
-                    <th>일시</th>
-                    <th>평균 기온(°C)</th>
-                    <th>최고 기온(°C)</th>
-                    <th>최저 기온(°C)</th>
-                    <th></th>
-                </tr>
-                </thead>
-                <tbody>
-                <%
-                    for(TemperatureStaticsVO temperatureStatic : TEMPERATURE_LIST) {
-                %>
-                    <tr>
-                        <td><%= temperatureStatic.getName() %></td>
-                        <td><%= temperatureStatic.getDate().substring(0,10) %></td>
-                        <td><%= temperatureStatic.getAVG() %></td>
-                        <td><%= temperatureStatic.getMAX() %></td>
-                        <td><%= temperatureStatic.getMIN() %></td>
-                        <td>
-                            <button class="detailButton" data-id="<%= temperatureStatic.getDate() %>">자세히 보기</button>
-                        </td>
-                    </tr>
-                <% } %>
-                </tbody>
-            </table>
-        </div>
+                </div>
+
+        <%--        table container -> none --%>
+                <div class="table_container">
+                    <table class="statics_table">
+                        <thead>
+                        <tr>
+    <%--                        <th>장비명</th>--%>
+                            <th>일시</th>
+                            <th>평균 ${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}</th>
+                            <th>최고 ${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}</th>
+                            <th>최저 ${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <%
+                            for(TemperatureStaticsVO temperatureStatic : TEMPERATURE_LIST) {
+                                if(temperatureStatic.getName().equals(equipment)) {
+                        %>
+                            <tr>
+    <%--                            <td><%= temperatureStatic.getName() %></td> --%>
+                                <td><%= temperatureStatic.getDate().substring(0,10) %></td>
+                                <td><%= temperatureStatic.getAVG() %></td>
+                                <td><%= temperatureStatic.getMAX() %></td>
+                                <td><%= temperatureStatic.getMIN() %></td>
+                                <td>
+                                    <button class="detailButton" data-id="<%= temperatureStatic.getDate() %>" data-date="<%= temperatureStatic.getDate().substring(0,10) %>" data-location="<%= temperatureStatic.getLocation() %>">자세히 보기</button>
+                                </td>
+                            </tr>
+                        <%      }
+                            } %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+    <% } %>
     </div>
     <% } else { %>
         <div class="SearchNotFound">
@@ -331,6 +183,169 @@
         </div>
     <% } %>
 </main>
+    <script src="https://www.gstatic.com/charts/loader.js" async></script>
+
+    <script>
+        /* Draw Google Charts */
+        google.charts.load('current', {packages: ['corechart']});
+
+        const TEMPERATURE_LIST_STRING = "<%= TEMPERATURE_LIST  %>";
+        const TEMPERATURE_LIST = TEMPERATURE_LIST_STRING.substring(1,TEMPERATURE_LIST_STRING.length-2).split(",,");
+
+        function drawChart(equipment) {
+            let data = new google.visualization.DataTable();
+            let minimum = 100;
+            let maximum = -100;
+            data.addColumn('string', '날짜');
+            data.addColumn('number', '최고 ${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}');
+            data.addColumn('number', '평균 ${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}');
+            data.addColumn('number', '최저 ${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}');
+
+            let rows = [];
+            for(let i = 0; i < TEMPERATURE_LIST.length; i++) {
+                const TEMPERATURE_DATA = TEMPERATURE_LIST[i].split(",");
+                let row = []
+
+                if(TEMPERATURE_DATA[0].includes(equipment)){
+                    row.push(TEMPERATURE_DATA[4].substring(0,10));
+                    if(Number(TEMPERATURE_DATA[2]) > maximum) {
+                        maximum = Number(TEMPERATURE_DATA[2]);
+                    }
+                    row.push(Number(TEMPERATURE_DATA[2]));
+                    row.push(Number(TEMPERATURE_DATA[1]));
+
+                    if(Number(TEMPERATURE_DATA[3]) < minimum) {
+                        minimum = Number(TEMPERATURE_DATA[3]);
+                    }
+                    row.push(Number(TEMPERATURE_DATA[3]));
+                    rows.push(row);
+                }
+            }
+
+            data.addRows(rows);
+
+            var options = {
+                width:'80%',
+                height:'80%',
+                backgroundColor:'#FCF6F5',
+                chartArea: {
+                    width:'80%',
+                    height:'80%',
+                },
+                focusTarget:'category',
+                fontName:'GmarketSans',
+                hAxis: {
+                    title: '일시',
+                    gridlines: {
+                        interval:10
+                    }
+                },
+                vAxis: {
+                    title: '${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}',
+                    viewWindow: {
+                        max:maximum + 5,
+                        min:minimum - 5
+                    }
+                },
+                series:{
+                    0:{
+                        color:'#FF6262',
+                        lineWidth:4
+                    },
+                    1:{
+                        color:"#6EFF62",
+                        lineWidth:4
+                    },
+                    2:{
+                        color:"#628EFF",
+                        lineWidth:4
+                    }
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(equipment));
+
+            chart.draw(data, options);
+            window.addEventListener('resize', drawChart, false);
+        }
+
+        <%
+
+        List<String> EQUIPMENT_LIST = (List<String>) request.getAttribute("equipment_list");
+        for(String equipment: EQUIPMENT_LIST)
+        { %>
+            google.charts.setOnLoadCallback(function(){drawChart('<%= equipment %>')});
+        <% } %>
+    </script>
+
+    <%-- Google Chart Function 2--%>
+    <script>
+        function drawChart2(server_data, className) {
+            let data = new google.visualization.DataTable();
+            let minimum = 100;
+            let maximum = -100;
+            data.addColumn('string', '시간');
+            data.addColumn('number', '${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}');
+
+            let rows = [];
+            for(let i = 0; i < server_data.length; i++) {
+                let row = []
+                row.push(server_data[i].date.substring(11,16));
+                if(Number(server_data[i].value) > maximum) {
+                    maximum = Number(server_data[i].value);
+                }
+
+                if(Number(server_data[i].value) < minimum) {
+                    minimum = Number(server_data[i].value);
+                }
+                row.push(server_data[i].value);
+                rows.push(row);
+            }
+
+            data.addRows(rows);
+
+            var options = {
+                width:'100%',
+                height:'700px',
+                animation:{
+                    duration:1000,
+                    easing:'inAndOut',
+                    startup:true
+                },
+                backgroundColor:'#fcfcfc',
+                chartArea: {
+                    width:'80%',
+                    height:'80%',
+                },
+                focusTarget:'category',
+                fontName:'GmarketSans',
+                hAxis: {
+                    title: '일시',
+                    showTextEvery: 36,
+                    allowContainerBoundaryTextCutoff: false,
+                },
+                vAxis: {
+                    title: '${requestScope.division.equals("기온") ? "기온(°C)" : "습도(%)"}',
+                    viewWindow: {
+                        max:maximum + 2,
+                        min:minimum - 2
+                    }
+                },
+                series:{
+                    0:{
+                        color:"#6EFF62",
+                        lineWidth:4
+                    }
+                }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(className));
+
+            chart.draw(data, options);
+            window.addEventListener('resize', drawChart2, false);
+        }
+
+    </script>
     <script src="./js/utils/modal.js"></script>
     <script src="./js/utils/logout.js"></script>
     <script src="./js/common/main.js"></script>

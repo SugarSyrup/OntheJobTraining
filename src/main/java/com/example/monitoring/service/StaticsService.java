@@ -21,6 +21,14 @@ public class StaticsService {
         }
     }
 
+    public List<String> getEquipmentsList(String division, String location, String name, String startDate, String endDate) throws Exception {
+        if(division.equals("기온")) {
+            return staticsRepository.getTemperatureEquipmentsList(location, name, startDate, endDate);
+        } else {
+            return staticsRepository.getHumidityEquipmentsList(location, name, startDate, endDate);
+        }
+    }
+
     public List<Temperature> getDateInfo(String division, String date)  throws Exception {
         if(division.equals("기온")) {
             return staticsRepository.getDateTemperatures(date);

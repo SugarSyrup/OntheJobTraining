@@ -10,6 +10,10 @@ public interface IStaticsRepository {
 
     public List<TemperatureStaticsVO> getHumidityStatics(String location, String name, String startDate, String endDate) throws Exception;
 
+    public List<String> getTemperatureEquipmentsList(String location, String name, String startDate, String endDate) throws Exception;
+
+    public List<String> getHumidityEquipmentsList(String location, String name, String startDate, String endDate) throws Exception;
+
     public List<Temperature> getDateTemperatures(String date) throws Exception;
 
     public List<Temperature> getDateHumidities(String date) throws Exception;

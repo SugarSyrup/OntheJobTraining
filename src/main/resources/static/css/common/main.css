@@ -4,25 +4,44 @@
     margin-bottom: 4px;
 }
 
+.equipmentPerWrapper{
+    width:100%;
+    height:auto;
+
+    overflow-y:auto;
+
+    display:flex;
+    gap:20px;
+    flex-shrink:1;
+    flex-direction:column;
+    justify-content: flex-start;
+    align-items: center;
+
+}
+
 .content_wrapper {
     width:100%;
-    height:80vh;
+    height:45vh;
 
     position:relative;
 
     display:flex;
-    flex-direction:column;
+    flex-direction:row;
     align-items: center;
+
+    padding-bottom:10px;
+
+    border-bottom:2px solid lightgrey;
 }
 
 .content_wrapper .chart_container {
     width:100%;
-    height:600px;
+    height:100%;
 }
 
 .content_wrapper .table_container {
     width:100%;
-    height:300px;
+    height:90%;
     overflow:auto;
 
     display:flex;
@@ -49,6 +68,7 @@
 
 .content_wrapper .table_container table {
     width:90%;
+    height:80%;
     text-align:center;
     position:relative;
     border-collapse: separate;
@@ -62,14 +82,6 @@
     background-color:var(--bgColor);
 }
 
-.content_wrapper .table_container table thead tr,
-.content_wrapper .table_container table thead th {
-    padding-bottom:10px;
-    font-size:24px;
-    border-spacing:0;
-    border-bottom:1px solid var(--grey);
-    vertical-align:middle
-}
 
 .content_wrapper .table_container table tbody tr td:first-child { border-top-left-radius: 16px; }
 .content_wrapper .table_container table tbody tr td:last-child { border-top-right-radius: 16px; }
@@ -91,7 +103,16 @@
     text-align:center;
     padding-bottom:8px;
     padding-top:8px;
-    font-size:22px;
+    font-size:18px;
+}
+
+.content_wrapper .table_container table thead tr,
+.content_wrapper .table_container table thead th {
+    padding-bottom:10px;
+    font-size:20px;
+    border-spacing:0;
+    border-bottom:1px solid var(--grey);
+    vertical-align:middle
 }
 
 .content_wrapper .table_container table .detailButton {
@@ -100,6 +121,7 @@
     background-color:var(--primary);
     border-radius:10px;
     font-size:18px;
+    font-weight:bolder;
     padding:4px 8px;
     color:white;
     cursor:pointer;
