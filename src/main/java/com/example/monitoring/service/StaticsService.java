@@ -1,7 +1,7 @@
 package com.example.monitoring.service;
 
-import com.example.monitoring.domain.Temperature;
-import com.example.monitoring.domain.TemperatureStaticsVO;
+import com.example.monitoring.domain.SensorValueVO;
+import com.example.monitoring.domain.SensorStaticsValueVO;
 import com.example.monitoring.repository.IStaticsRepository;
 
 import java.util.List;
@@ -13,7 +13,7 @@ public class StaticsService {
         this.staticsRepository = staticsRepository;
     }
 
-    public List<TemperatureStaticsVO> getTemperatureStatics(String division, String location, String name, String startDate, String endDate) throws Exception {
+    public List<SensorStaticsValueVO> getTemperatureStatics(String division, String location, String name, String startDate, String endDate) throws Exception {
         if(division.equals("기온")) {
             return staticsRepository.getTemperatureStatics(location, name, startDate, endDate);
         } else {
@@ -29,11 +29,11 @@ public class StaticsService {
         }
     }
 
-    public List<Temperature> getDateInfo(String division, String date)  throws Exception {
+    public List<SensorValueVO> getDateInfo(String division, String date, String name)  throws Exception {
         if(division.equals("기온")) {
-            return staticsRepository.getDateTemperatures(date);
+            return staticsRepository.getDateTemperatures(date, name);
         } else {
-            return staticsRepository.getDateHumidities(date);
+            return staticsRepository.getDateHumidities(date, name);
         }
     }
 }

@@ -135,6 +135,15 @@ public class EquipementRepository implements IEquipementRepository{
 
     public List<String> findLocations(String division) {
         String sql = "SELECT DISTINCT location FROM equipment WHERE division LIKE ? ORDER BY location ASC";
+
+
+        if(division.equals("기온")) {
+            sql = "SELECT DISTINCT location FROM temperature_statics LEFT JOIN equipment ON temperature_statics.temperature_equipment_no = equipment.equipment_no WHERE division LIKE ? ORDER BY location ASC";
+        } else {
+            sql = "SELECT DISTINCT location FROM humidity_statics LEFT JOIN equipment ON humidity_statics.humidity_equipment_no = equipment.equipment_no WHERE division LIKE ? ORDER BY location ASC";
+        }
+
+
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;

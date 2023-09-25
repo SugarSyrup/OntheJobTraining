@@ -1,18 +1,15 @@
 package com.example.monitoring.controller;
 
-import com.example.monitoring.domain.Temperature;
-import com.example.monitoring.domain.TemperatureStaticsVO;
-import com.example.monitoring.repository.EquipementRepository;
+import com.example.monitoring.domain.SensorInfoPostBody;
+import com.example.monitoring.domain.SensorValueVO;
 import com.example.monitoring.service.EquipmentService;
 import com.example.monitoring.service.StaticsService;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -95,11 +92,9 @@ public class MainController {
 
     @ResponseBody
     @PostMapping("/main/info")
-    public List<Temperature> postInfo(HttpServletRequest req, @RequestBody Temperature temperatureVO)  throws Exception {
-        List<Temperature> _tmp = staticsService.getDateInfo(this.division,temperatureVO.getDate());
-        System.out.println("post worked");
-        System.out.println(_tmp);
-        return _tmp;
+    public List<SensorValueVO> postInfo(HttpServletRequest req, @RequestBody SensorInfoPostBody sensorInfoPostBody)  throws Exception {
+        List<SensorValueVO> dateInfo = staticsService.getDateInfo(this.division, sensorInfoPostBody.getDate(), sensorInfoPostBody.getName());
+        return dateInfo;
     };
 }
 

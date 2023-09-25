@@ -7,7 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Temperature {
+public class SensorValueVO {
     private int temperature_no;
     private int equipment_no;
     private float value;

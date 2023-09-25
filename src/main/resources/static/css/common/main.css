@@ -11,12 +11,19 @@
     overflow-y:auto;
 
     display:flex;
-    gap:20px;
+    gap:10px;
     flex-shrink:1;
     flex-direction:column;
     justify-content: flex-start;
     align-items: center;
 
+}
+
+.equipmentPerWrapper .tableHeader {
+    margin-top:20px;
+    margin-left:60px;
+    font-weight:bolder;
+    font-size:24px;
 }
 
 .content_wrapper {
@@ -40,8 +47,8 @@
 }
 
 .content_wrapper .table_container {
-    width:100%;
-    height:90%;
+    width:0%;
+    height:100%;
     overflow:auto;
 
     display:flex;
@@ -49,6 +56,18 @@
     align-items: flex-start;
     position:relative;
     margin-top:10px;
+}
+
+.content_wrapper .tableButton {
+    font-size:28px;
+    font-weight:bolder;
+
+    position:absolute;
+    top:-40px;
+    right:50px;
+
+    cursor:pointer;
+    border-bottom:6px solid var(--primary);
 }
 
 

@@ -72,6 +72,7 @@ endDate.addEventListener('input', (event) => {
 
 /* Modal */
 let modalCurrent;
+let modalCurrentName;
 
 const DetailBtns = document.querySelectorAll('.detailButton');
 const DetailOverlay = document.querySelector('.modal_wrapper');
@@ -100,6 +101,7 @@ DetailBtns.forEach((detailBtn) => {
     document.querySelector('.modalHeader h1').innerText = detailBtn.dataset.date.substring(0,4) + "년 " + detailBtn.dataset.date.substring(5,7) + "월 " + detailBtn.dataset.date.substring(8,10) + "일";
     document.querySelector('.modalHeader span').innerText = detailBtn.dataset.location;
     modalCurrent = detailBtn.dataset.id.substring(0,10);
+    modalCurrentName =detailBtn.dataset.name;
 
     let scheduledFunc;
 
@@ -113,7 +115,8 @@ DetailBtns.forEach((detailBtn) => {
                         'Content-Type' : 'application/json',
                     },
                     body: JSON.stringify({
-                        date: modalCurrent
+                        date: modalCurrent,
+                        name : modalCurrentName
                     })
                 }).then((response) => {
                     return response.json();
@@ -161,3 +164,10 @@ DetailBtns.forEach((detailBtn) => {
     });
     DetailModalNo.addEventListener('click', () => {clearInterval(scheduledFunc)});
 });
+
+
+
+/* table animation */
+const tableShowBtn = document.querySelector('.tableButton');
+const chartContainer = document.querySelector('.chart_container');
+const tableContainer = document.querySelector('.table_container');

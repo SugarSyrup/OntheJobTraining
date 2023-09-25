@@ -33,7 +33,7 @@ public class LoginController{
         ResponseMessage msg = userService.login(email, password);
         req.setAttribute("Message", msg);
 
-        if(msg.getOk()) {
+        if(msg.isOk()) {
             HttpSession session = req.getSession();
             session.setAttribute("id", msg.getMessage());
             boolean isAdmin = userService.findAdminById(msg.getMessage());

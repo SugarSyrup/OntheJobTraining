@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.monitoring.domain.TemperatureStaticsVO" %>
+<%@ page import="com.example.monitoring.domain.SensorStaticsValueVO" %>
 
-<%List<TemperatureStaticsVO> TEMPERATURE_LIST = (List<TemperatureStaticsVO>)  request.getAttribute("temperature_statics"); %>
+<%List<SensorStaticsValueVO> TEMPERATURE_LIST = (List<SensorStaticsValueVO>)  request.getAttribute("temperature_statics"); %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,8 +135,8 @@
         List<String> EQUIPMENT_LIST = (List<String>) request.getAttribute("equipment_list");
         for(String equipment : EQUIPMENT_LIST) {
     %>
-        <span> <%= equipment %> </span>
-            <div class="content_wrapper">
+        <span class="tableHeader"> <%= equipment %> </span>
+        <div class="content_wrapper">
                 <div class="chart_container" id="<%= equipment %>">
 
                 </div>
@@ -156,7 +156,7 @@
                         </thead>
                         <tbody>
                         <%
-                            for(TemperatureStaticsVO temperatureStatic : TEMPERATURE_LIST) {
+                            for(SensorStaticsValueVO temperatureStatic : TEMPERATURE_LIST) {
                                 if(temperatureStatic.getName().equals(equipment)) {
                         %>
                             <tr>
@@ -166,7 +166,7 @@
                                 <td><%= temperatureStatic.getMAX() %></td>
                                 <td><%= temperatureStatic.getMIN() %></td>
                                 <td>
-                                    <button class="detailButton" data-id="<%= temperatureStatic.getDate() %>" data-date="<%= temperatureStatic.getDate().substring(0,10) %>" data-location="<%= temperatureStatic.getLocation() %>">자세히 보기</button>
+                                    <button class="detailButton" data-id="<%= temperatureStatic.getDate() %>" data-date="<%= temperatureStatic.getDate().substring(0,10) %>" data-location="<%= temperatureStatic.getLocation() %>" data-name="<%= temperatureStatic.getName() %>" >자세히 보기</button>
                                 </td>
                             </tr>
                         <%      }
@@ -174,6 +174,7 @@
                         </tbody>
                     </table>
                 </div>
+                <span class="tableButton">테이블 보기</span>
             </div>
     <% } %>
     </div>
@@ -229,7 +230,7 @@
                 height:'80%',
                 backgroundColor:'#FCF6F5',
                 chartArea: {
-                    width:'80%',
+                    width:'70%',
                     height:'80%',
                 },
                 focusTarget:'category',
@@ -238,6 +239,9 @@
                     title: '일시',
                     gridlines: {
                         interval:10
+                    },
+                    textStyle: {
+                        fontSize:12
                     }
                 },
                 vAxis: {
@@ -266,15 +270,47 @@
             var chart = new google.visualization.LineChart(document.getElementById(equipment));
 
             chart.draw(data, options);
-            window.addEventListener('resize', drawChart, false);
+
+            function resizeChart() {
+                chart.draw(data, options);
+            }
+            if (document.addEventListener) {
+                window.addEventListener('resize', () => {
+                    resizeChart();
+                });
+            } else {
+                window.resize = resizeChart;
+            }
+
+            const chartContainer = document.querySelectorAll('.chart_container');
+            const tableContainer = document.querySelectorAll('.table_container');
+
+            document.querySelectorAll('.tableButton').forEach((btn, idx) => {
+                btn.addEventListener('click', (e) => {
+                    if (e.currentTarget.innerText == "테이블 보기") {
+                        e.currentTarget.innerText = "테이블 닫기";
+                        chartContainer[idx].style.width = "55%";
+                        tableContainer[idx].style.width = "45%";
+                    } else {
+                        e.currentTarget.innerText = "테이블 보기";
+                        chartContainer[idx].style.width = "100%";
+                        tableContainer[idx].style.width = "0%";
+                    }
+                    resizeChart();
+                    setTimeout(() => {
+                        resizeChart();
+                    }, 1);
+                })
+            })
         }
 
-        <%
 
+        <%
         List<String> EQUIPMENT_LIST = (List<String>) request.getAttribute("equipment_list");
         for(String equipment: EQUIPMENT_LIST)
         { %>
             google.charts.setOnLoadCallback(function(){drawChart('<%= equipment %>')});
+
         <% } %>
     </script>
 
@@ -342,6 +378,18 @@
             var chart = new google.visualization.LineChart(document.getElementById(className));
 
             chart.draw(data, options);
+
+            function resizeChart() {
+                chart.draw(data, options);
+            }
+            if (document.addEventListener) {
+                window.addEventListener('resize', () => {
+                    resizeChart();
+                });
+            } else {
+                window.resize = resizeChart;
+            }
+
             window.addEventListener('resize', drawChart2, false);
         }
 

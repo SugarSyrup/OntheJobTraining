@@ -1,12 +1,11 @@
 package com.example.monitoring.repository;
 
-import com.example.monitoring.domain.Temperature;
-import com.example.monitoring.domain.TemperatureStaticsVO;
+import com.example.monitoring.domain.SensorValueVO;
+import com.example.monitoring.domain.SensorStaticsValueVO;
 import lombok.Cleanup;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import javax.sql.DataSource;
-import javax.xml.transform.Result;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,7 +20,7 @@ public class StaticsRepository implements IStaticsRepository{
         this.dataSource = dataSource;
     }
 
-    public List<TemperatureStaticsVO> getTemperatureStatics(String location, String name, String startDate, String endDate) throws Exception {
+    public List<SensorStaticsValueVO> getTemperatureStatics(String location, String name, String startDate, String endDate) throws Exception {
         String sql = "SELECT * FROM temperature_statics LEFT JOIN equipment ON temperature_statics.temperature_equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ?";
 
         @Cleanup Connection conn = null;
@@ -39,9 +38,9 @@ public class StaticsRepository implements IStaticsRepository{
 
          rs = pstmt.executeQuery();
 
-         List<TemperatureStaticsVO> temperatureStaticsVOList = new ArrayList<TemperatureStaticsVO>();
+         List<SensorStaticsValueVO> sensorStaticsValueVOList = new ArrayList<SensorStaticsValueVO>();
          while(rs.next()) {
-             TemperatureStaticsVO temperatureStatic = new TemperatureStaticsVO(
+             SensorStaticsValueVO temperatureStatic = new SensorStaticsValueVO(
                      rs.getString("name"),
                      Float.parseFloat(String.format("%.2f",rs.getFloat("AVG"))),
                      rs.getFloat("MAX"),
@@ -49,13 +48,13 @@ public class StaticsRepository implements IStaticsRepository{
                      rs.getString("DATE"),
                      rs.getString("location")
              );
-             temperatureStaticsVOList.add(temperatureStatic);
+             sensorStaticsValueVOList.add(temperatureStatic);
          }
 
-        return temperatureStaticsVOList;
+        return sensorStaticsValueVOList;
     }
 
-    public List<TemperatureStaticsVO> getHumidityStatics(String location, String name, String startDate, String endDate) throws Exception {
+    public List<SensorStaticsValueVO> getHumidityStatics(String location, String name, String startDate, String endDate) throws Exception {
         String sql = "SELECT * FROM humidity_statics LEFT JOIN equipment ON humidity_statics.humidity_equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ?";
 
         @Cleanup Connection conn = null;
@@ -73,9 +72,9 @@ public class StaticsRepository implements IStaticsRepository{
 
         rs = pstmt.executeQuery();
 
-        List<TemperatureStaticsVO> temperatureStaticsVOList = new ArrayList<TemperatureStaticsVO>();
+        List<SensorStaticsValueVO> sensorStaticsValueVOList = new ArrayList<SensorStaticsValueVO>();
         while(rs.next()) {
-            TemperatureStaticsVO temperatureStatic = new TemperatureStaticsVO(
+            SensorStaticsValueVO temperatureStatic = new SensorStaticsValueVO(
                     rs.getString("name"),
                     Float.parseFloat(String.format("%.2f",rs.getFloat("AVG"))),
                     rs.getFloat("MAX"),
@@ -83,10 +82,10 @@ public class StaticsRepository implements IStaticsRepository{
                     rs.getString("DATE"),
                     rs.getString("location")
             );
-            temperatureStaticsVOList.add(temperatureStatic);
+            sensorStaticsValueVOList.add(temperatureStatic);
         }
 
-        return temperatureStaticsVOList;
+        return sensorStaticsValueVOList;
     }
 
 
@@ -144,8 +143,8 @@ public class StaticsRepository implements IStaticsRepository{
     }
 
 
-    public List<Temperature> getDateTemperatures(String date) throws Exception{
-        String sql = "SELECT * FROM temperature LEFT JOIN equipment ON temperature.equipment_no = equipment.equipment_no WHERE date LIKE ?";
+    public List<SensorValueVO> getDateTemperatures(String date, String name) throws Exception{
+        String sql = "SELECT * FROM temperature LEFT JOIN equipment ON temperature.equipment_no = equipment.equipment_no WHERE date LIKE ? AND equipment.name LIKE ?";
 
         @Cleanup Connection conn = null;
         @Cleanup PreparedStatement pstmt = null;
@@ -154,27 +153,28 @@ public class StaticsRepository implements IStaticsRepository{
         conn = getConnection();
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "%" + date + "%");
+        pstmt.setString(2, "%" + name + "%");
 
         System.out.println(pstmt);
 
         rs = pstmt.executeQuery();
 
-        List<Temperature> temperatures = new ArrayList<Temperature>();
+        List<SensorValueVO> sensorValueVOS = new ArrayList<SensorValueVO>();
         while(rs.next()) {
-            Temperature temperature = new Temperature(
+            SensorValueVO sensorValueVO = new SensorValueVO(
                     rs.getInt("temperature_no"),
                     rs.getInt("equipment_no"),
                     rs.getFloat("value"),
                     rs.getString("date")
             );
-            temperatures.add(temperature);
+            sensorValueVOS.add(sensorValueVO);
         }
 
-        return temperatures;
+        return sensorValueVOS;
     }
 
-    public List<Temperature> getDateHumidities(String date) throws Exception{
-        String sql = "SELECT * FROM humidity LEFT JOIN equipment ON humidity.equipment_no = equipment.equipment_no WHERE date LIKE ?";
+    public List<SensorValueVO> getDateHumidities(String date, String name) throws Exception{
+        String sql = "SELECT * FROM humidity LEFT JOIN equipment ON humidity.equipment_no = equipment.equipment_no WHERE date LIKE ? AND equipment.name LIKE ?";
 
         @Cleanup Connection conn = null;
         @Cleanup PreparedStatement pstmt = null;
@@ -183,23 +183,24 @@ public class StaticsRepository implements IStaticsRepository{
         conn = getConnection();
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "%" + date + "%");
+        pstmt.setString(2, "%" + name + "%");
 
         System.out.println(pstmt);
 
         rs = pstmt.executeQuery();
 
-        List<Temperature> temperatures = new ArrayList<Temperature>();
+        List<SensorValueVO> sensorValueVOS = new ArrayList<SensorValueVO>();
         while(rs.next()) {
-            Temperature temperature = new Temperature(
+            SensorValueVO sensorValueVO = new SensorValueVO(
                     rs.getInt("humidity_no"),
                     rs.getInt("equipment_no"),
                     rs.getFloat("value"),
                     rs.getString("date")
             );
-            temperatures.add(temperature);
+            sensorValueVOS.add(sensorValueVO);
         }
 
-        return temperatures;
+        return sensorValueVOS;
     }
 
     private Connection getConnection() {

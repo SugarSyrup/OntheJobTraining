@@ -66,7 +66,7 @@ public class SignUpController extends HttpServlet {
         req.setAttribute("password_check", password_check);
         req.setAttribute("Message", msg);
 
-        if (msg.getOk()) {
+        if (msg.isOk()) {
             return "login";
         } else {
             return "sign-up";
