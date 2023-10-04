@@ -15,6 +15,7 @@ repositories {
 	mavenCentral()
 }
 
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -22,9 +23,12 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation group: 'com.zaxxer', name:'HikariCP', version:'5.0.0'
 
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.assertj:assertj-core:3.11.1'
 
 	//liveloading
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -32,19 +36,18 @@ dependencies {
     //jsp
 	implementation 'javax.servlet:jstl'
 	implementation "org.apache.tomcat.embed:tomcat-embed-jasper"
-
-	//Log4j2
 	compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
-	implementation group: 'org.apache.logging.log4j2', name: 'log4j-core', version: '2.17.2'
-	implementation group: 'org.apache.logging.log4j2', name: 'log4j-api', version: '2.17.2'
-	implementation group: 'org.apache.logging.log4j2', name: 'log4j-slf4j-impl', version: '2.17.2'
 
 	//lombok
 	implementation 'org.projectlombok:lombok'
 
+	//mapper
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '3.0.0'
+
 	//security
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()

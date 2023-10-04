@@ -31,7 +31,7 @@
                 <label for="name">Name</label>
                 <input type="text" placeholder="이름을 입력해주세요..." id="name" name="name" required value="${ requestScope.UserInfo == null ? "" : requestScope.UserInfo.getName()}" />
             </div>
-            <span class="errmsg">${ requestScope.Message.getOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
+            <span class="errmsg">${ requestScope.Message.isOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
             <input type="submit" value="회원가입" class="submit_button"/>
         </form>
     <% } else {

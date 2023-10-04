@@ -14,7 +14,7 @@ public class UserVO {
     private String email;
     private String password;
     private String name;
-    private Role role;
+    private UserRole userRole;
     private SimpleDateFormat regist_date;
     private SimpleDateFormat up_date;
 }

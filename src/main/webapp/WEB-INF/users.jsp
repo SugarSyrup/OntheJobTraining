@@ -1,6 +1,7 @@
 <%@ page import="com.example.monitoring.domain.User" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.monitoring.domain.Role" %>
+<%@ page import="com.example.monitoring.domain.UserRole" %>
+<%@ page import="com.example.monitoring.domain.UserRole" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,9 +23,9 @@
 
         <form class="input_wrapper" id="modalForm" action="/api/role-change" method="post">
             <div class="input_wrapper">
-                <label for="role">권한</label>
+                <label for="userRole">권한</label>
                 <input name="user_no" style="display:none" type="text" id="user_no_input"/>
-                <select name="role" form="modalForm" id="modal_input">
+                <select name="userRole" form="modalForm" id="modal_input">
                     <option value="USER">
                         일반 유저
                     </option>
@@ -65,7 +66,7 @@
 
         <% if((Boolean) session.getAttribute("isAdmin")) { %>
         <a href="/users"  class="users_link">
-            <span class="link">유저관리</span>
+            <span class="link accent_underline">유저관리</span>
         </a>
         <% } %>
 
@@ -84,15 +85,15 @@
                 <input id="name" placeholder="이름을 입력하세요.." name="name" value="${requestScope.name == "" ? "" : requestScope.name}" />
             </div>
             <div class="input_wrapper">
-                <label for="role">권한</label>
-                <select name="role" id="role" form="sidemenuForm">
-                    <option value="NONE" ${requestScope.role.equals("NONE") ? "selected" : ""} >
+                <label for="userRole">권한</label>
+                <select name="userRole" id="userRole" form="sidemenuForm">
+                    <option value="NONE" ${requestScope.userRole.equals("NONE") ? "selected" : ""} >
                         전체
                     </option>
-                    <option value="USER" ${requestScope.role.equals("USER") ? "selected" : ""} >
+                    <option value="USER" ${requestScope.userRole.equals("USER") ? "selected" : ""} >
                         일반 유저
                     </option>
-                    <option value="ADMIN" ${requestScope.role.equals("ADMIN") ? "selected" : ""} >
+                    <option value="ADMIN" ${requestScope.userRole.equals("ADMIN") ? "selected" : ""} >
                         관리자
                     </option>
                 </select>
@@ -121,17 +122,17 @@
                     <td><%= user.getEmail() %></td>
                     <td>
                         <div class="role_wrapper">
-                            <% if(user.getRole() == Role.USER) { %>
+                            <% if(user.getUserRole() == UserRole.USER) { %>
                             일반 유저
                             <% } else { %>
                             관리자
                             <% } %>
-                            <span class="role_btn role_modal_open" data-userno="<%= user.getUserNo() %>" data-userrole="<%= user.getRole() %>">권한 변경</span>
+                            <span class="role_btn role_modal_open" data-userno="<%= user.getUser_no() %>" data-userrole="<%= user.getUserRole() %>">권한 변경</span>
                         </div>
                     </td>
-                    <td><%= user.getRegistDate() %></td>
+                    <td><%= user.getRegist_date() %></td>
                     <td>
-                        <span class="delete_btn delete_modal_open" data-userno="<%= user.getUserNo() %>">삭제</span>
+                        <span class="delete_btn delete_modal_open" data-userno="<%= user.getUser_no() %>">삭제</span>
                     </td>
                 </tr>
 

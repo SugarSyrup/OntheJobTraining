@@ -24,7 +24,7 @@
         <label for="password">Password</label>
         <input type="password" placeholder="비밀번호를 입력해주세요..." id="password" name="password"/>
     </div>
-    <span class="errmsg">${ requestScope.Message.getOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
+    <span class="errmsg">${ requestScope.Message.isOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
     <input type="submit" value="로그인" class="submit_button" required/>
     </form>
     <a href="/sign-up" class="submit_button">
@@ -38,7 +38,7 @@
 </main>
 </body>
 <script>
-    var isOk = ${requestScope.Message.getOk()};
+    var isOk = ${requestScope.Message.isOk()};
     var Message = ${requestScope.Message.getMessage()};
 
     if(isOk) {

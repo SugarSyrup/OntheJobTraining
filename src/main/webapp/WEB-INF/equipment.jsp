@@ -31,10 +31,10 @@
             <div class="input_wrapper">
                 <label for="regist_name">장비명</label>
                 <div class="duplicated_not_wrapper">
-                    <input name="regist_name" type="text" id="regist_name" placeholder="장비명을 입력해주세요..." value="<%= rm.getOk() ? rm.getMessage() : duplicatedNotBody.getName() %>" <%= rm.getOk() ? "disabled" : ""%> required />
-                    <button class="duplicated_not_button"> <%= !rm.getOk() ? "중복체크" : "다시입력" %> </button>
+                    <input name="regist_name" type="text" id="regist_name" placeholder="장비명을 입력해주세요..." value="<%= rm.isOk() ? rm.getMessage() : duplicatedNotBody.getName() %>" <%= rm.isOk() ? "disabled" : ""%> required />
+                    <button class="duplicated_not_button"> <%= !rm.isOk() ? "중복체크" : "다시입력" %> </button>
                 </div>
-                <span class="errmsg"> <%=rm.getOk() ? "" : rm.getMessage()%> </span>
+                <span class="errmsg"> <%=rm.isOk() ? "" : rm.getMessage()%> </span>
             </div>
             <div class="input_wrapper">
                 <label>수집하는 데이터</label>

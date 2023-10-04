@@ -1,20 +1,18 @@
-package com.example.monitoring.domain;
+package com.example.monitoring.dto;
 
+import com.example.monitoring.domain.UserRole;
 import lombok.*;
 
-
-@Getter
-@Setter
-@ToString
+@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
-    private int user_no;
+public class MemberDTO {
+    private Long no;
     private String email;
     private String password;
     private String name;
     private UserRole userRole;
-
     private String regist_date;
+
 }

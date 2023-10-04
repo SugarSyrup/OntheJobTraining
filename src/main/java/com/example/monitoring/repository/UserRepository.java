@@ -1,9 +1,10 @@
 package com.example.monitoring.repository;
 
-import com.example.monitoring.domain.Role;
+import com.example.monitoring.domain.UserRole;
 import com.example.monitoring.domain.User;
 import lombok.Cleanup;
 import org.springframework.jdbc.datasource.DataSourceUtils;
+import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class UserRepository implements IUserRepository {
     private final DataSource dataSource;
 
@@ -49,12 +51,12 @@ public class UserRepository implements IUserRepository {
 
             if (rs.next()) {
                 User user = new User();
-                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setUser_no(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
-                user.setRole(Role.valueOf(rs.getString("role")));
-                user.setRegistDate(rs.getString("regist_date"));
+                user.setUserRole(UserRole.valueOf(rs.getString("role")));
+                user.setRegist_date(rs.getString("regist_date"));
                 return Optional.of(user);
             } else {
                 return Optional.empty();
@@ -80,12 +82,12 @@ public class UserRepository implements IUserRepository {
 
             if (rs.next()) {
                 User user = new User();
-                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setUser_no(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
-                user.setRole(Role.valueOf(rs.getString("role")));
-                user.setRegistDate(rs.getString("regist_date"));
+                user.setUserRole(UserRole.valueOf(rs.getString("role")));
+                user.setRegist_date(rs.getString("regist_date"));
                 return Optional.of(user);
             } else {
                 return Optional.empty();
@@ -111,12 +113,12 @@ public class UserRepository implements IUserRepository {
             List<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
-                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setUser_no(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
-                user.setRole(Role.valueOf(rs.getString("role")));
-                user.setRegistDate(rs.getString("regist_date"));
+                user.setUserRole(UserRole.valueOf(rs.getString("role")));
+                user.setRegist_date(rs.getString("regist_date"));
                 users.add(user);
             }
             return users;
@@ -128,7 +130,7 @@ public class UserRepository implements IUserRepository {
     }
 
     @Override
-    public List<User> findUsersByNameNRole(String name, Role role) {
+    public List<User> findUsersByNameNRole(String name, UserRole userRole) {
         String sql = "select * from user WHERE name LIKE ? AND role = ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -138,17 +140,17 @@ public class UserRepository implements IUserRepository {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + name + "%");
-            pstmt.setString(2, String.valueOf(role));
+            pstmt.setString(2, String.valueOf(userRole));
             rs = pstmt.executeQuery();
             List<User> users = new ArrayList<>();
             while (rs.next()) {
                 User user = new User();
-                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setUser_no(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
-                user.setRole(Role.valueOf(rs.getString("role")));
-                user.setRegistDate(rs.getString("regist_date"));
+                user.setUserRole(UserRole.valueOf(rs.getString("role")));
+                user.setRegist_date(rs.getString("regist_date"));
                 users.add(user);
             }
             return users;
@@ -172,12 +174,12 @@ public class UserRepository implements IUserRepository {
             List<User> users = new ArrayList<User>();
             while (rs.next()) {
                 User user = new User();
-                user.setUserNo(Integer.parseInt(rs.getString("user_no")));
+                user.setUser_no(Integer.parseInt(rs.getString("user_no")));
                 user.setEmail(rs.getString("email"));
                 user.setPassword(rs.getString("password"));
                 user.setName(rs.getString("name"));
-                user.setRole(Role.valueOf(rs.getString("role")));
-                user.setRegistDate(rs.getString("regist_date"));
+                user.setUserRole(UserRole.valueOf(rs.getString("role")));
+                user.setRegist_date(rs.getString("regist_date"));
                 users.add(user);
             }
             return users;
@@ -225,7 +227,7 @@ public class UserRepository implements IUserRepository {
             pstmt.setString(1,user.getPassword());
             pstmt.setString(2,user.getName());
             pstmt.setString(3,up_date.format(timestamp));
-            pstmt.setString(4,Integer.toString(user.getUserNo()));
+            pstmt.setString(4,Integer.toString(user.getUser_no()));
             pstmt.executeQuery();
 
             return true;
@@ -236,7 +238,7 @@ public class UserRepository implements IUserRepository {
         }
     }
 
-    public void updateUserRoleByKey(String key, Role role) {
+    public void updateUserRoleByKey(String key, UserRole userRole) {
         String sql = "update user set role=?, up_date=? where user_no=? ";
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -246,7 +248,7 @@ public class UserRepository implements IUserRepository {
         try {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1,String.valueOf(role));
+            pstmt.setString(1,String.valueOf(userRole));
             pstmt.setString(2,up_date.format(timestamp));
             pstmt.setString(3,key);
             pstmt.executeQuery();

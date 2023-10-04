@@ -34,8 +34,6 @@ public class StaticsRepository implements IStaticsRepository{
          pstmt.setString(3, "%" + name + "%");
          pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
 
-         System.out.println(pstmt);
-
          rs = pstmt.executeQuery();
 
          List<SensorStaticsValueVO> sensorStaticsValueVOList = new ArrayList<SensorStaticsValueVO>();
@@ -67,8 +65,6 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
         pstmt.setString(3, "%" + name + "%");
         pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
-
-        System.out.println(pstmt);
 
         rs = pstmt.executeQuery();
 
@@ -103,8 +99,6 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt.setString(3, "%" + name + "%");
         pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
 
-        System.out.println(pstmt);
-
         rs = pstmt.executeQuery();
 
         List<String> equipments = new ArrayList<String>();
@@ -130,8 +124,6 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt.setString(3, "%" + name + "%");
         pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
 
-        System.out.println(pstmt);
-
         rs = pstmt.executeQuery();
 
         List<String> equipments = new ArrayList<String>();
@@ -154,8 +146,6 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "%" + date + "%");
         pstmt.setString(2, "%" + name + "%");
-
-        System.out.println(pstmt);
 
         rs = pstmt.executeQuery();
 
@@ -184,8 +174,6 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "%" + date + "%");
         pstmt.setString(2, "%" + name + "%");
-
-        System.out.println(pstmt);
 
         rs = pstmt.executeQuery();
 

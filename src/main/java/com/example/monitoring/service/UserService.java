@@ -1,7 +1,7 @@
 package com.example.monitoring.service;
 
 import com.example.monitoring.domain.ResponseMessage;
-import com.example.monitoring.domain.Role;
+import com.example.monitoring.domain.UserRole;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class UserService {
         if(result.isPresent()){
             User user = result.orElseGet(() -> new User());
             if(passwordEncoder.matches(password, user.getPassword())) {
-                msg.setMessage(Integer.toString(user.getUserNo()));
+                msg.setMessage(Integer.toString(user.getUser_no()));
                 msg.setOk(true);
             }
             else {
@@ -61,7 +61,7 @@ public class UserService {
         Optional<User> result = userRepository.findByKey(id);
         if(result.isPresent()) {
             User user = result.orElseGet(() -> new User());
-            if(Role.ADMIN.equals(user.getRole())){
+            if(UserRole.ADMIN.equals(user.getUserRole())){
                 return true;
             } else {
                 return false;
@@ -85,8 +85,8 @@ public class UserService {
         return userRepository.findUsersByName(name);
     }
 
-    public List<User> findUsersByNameNRole(String name, Role role) {
-        return userRepository.findUsersByNameNRole(name, role);
+    public List<User> findUsersByNameNRole(String name, UserRole userRole) {
+        return userRepository.findUsersByNameNRole(name, userRole);
     }
 
     public boolean findDuplicatedEmail(String email) {
@@ -112,8 +112,8 @@ public class UserService {
     }
 
     public void updateUserRole(String key, String role) {
-        Role updateRole = Role.valueOf(role);
+        UserRole updateUserRole = UserRole.valueOf(role);
 
-        userRepository.updateUserRoleByKey(key, updateRole);
+        userRepository.updateUserRoleByKey(key, updateUserRole);
     }
 }

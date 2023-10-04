@@ -71,9 +71,6 @@ public class MainController {
         this.endDate = req.getParameter("end_date");
         this.name = req.getParameter("equipment_name");
 
-        System.out.println(this.startDate);
-        System.out.println(this.endDate);
-
         return "redirect:/";
     }
 

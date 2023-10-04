@@ -2,6 +2,7 @@ package com.example.monitoring.controller;
 
 import com.example.monitoring.domain.ResponseMessage;
 import com.example.monitoring.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,12 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
+@Log4j2
 public class LoginController{
     private final UserService userService;
 
     public LoginController(UserService userService) { this.userService = userService; }
+
     @GetMapping("/")
     public String getIndex(HttpServletRequest req) {
+        log.info("login get... ");
+
         HttpSession session = req.getSession();
         if(session.isNew() || session.getAttribute("id") == null) {
             return "login";

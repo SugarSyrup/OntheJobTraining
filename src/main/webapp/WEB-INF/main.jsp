@@ -142,7 +142,7 @@
                 </div>
 
         <%--        table container -> none --%>
-                <div class="table_container">
+                <div class="table_container" id="<%= equipment %>TableContainer">
                     <table class="statics_table">
                         <thead>
                         <tr>
@@ -174,7 +174,7 @@
                         </tbody>
                     </table>
                 </div>
-                <span class="tableButton">테이블 보기</span>
+                <span class="tableButton" id="<%= equipment %>TableButton">테이블 보기</span>
             </div>
     <% } %>
     </div>
@@ -282,25 +282,24 @@
                 window.resize = resizeChart;
             }
 
-            const chartContainer = document.querySelectorAll('.chart_container');
-            const tableContainer = document.querySelectorAll('.table_container');
 
-            document.querySelectorAll('.tableButton').forEach((btn, idx) => {
-                btn.addEventListener('click', (e) => {
-                    if (e.currentTarget.innerText == "테이블 보기") {
-                        e.currentTarget.innerText = "테이블 닫기";
-                        chartContainer[idx].style.width = "55%";
-                        tableContainer[idx].style.width = "45%";
-                    } else {
-                        e.currentTarget.innerText = "테이블 보기";
-                        chartContainer[idx].style.width = "100%";
-                        tableContainer[idx].style.width = "0%";
-                    }
+
+            document.getElementById(equipment + "TableButton").addEventListener('click', (e) => {
+
+                console.log(document.getElementById(equipment));
+                console.log(document.getElementById(equipment + "Table"));
+                if (e.currentTarget.innerText == "테이블 보기") {
+                    e.currentTarget.innerText = "테이블 닫기";
+                    document.getElementById(equipment).style.width = "55%";
+                    document.getElementById(equipment + "TableContainer").style.width = "45%";
+                } else {
+                    e.currentTarget.innerText = "테이블 보기";
+                    document.getElementById(equipment).style.width = "100%";
+                    document.getElementById(equipment + "TableContainer").style.width = "0%";
+                }
+                setTimeout(() => {
                     resizeChart();
-                    setTimeout(() => {
-                        resizeChart();
-                    }, 1);
-                })
+                }, 1);
             })
         }
 

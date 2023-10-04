@@ -2,19 +2,19 @@ package com.example.monitoring.domain;
 
 import lombok.*;
 
+import java.time.LocalDate;
 
 @Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
-public class User {
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+public class MemverVO {
     private int user_no;
     private String email;
     private String password;
     private String name;
-    private UserRole userRole;
-
-    private String regist_date;
+    private UserRole role;
+    private LocalDate regist_date;
+    private LocalDate up_date;
 }

@@ -1,5 +1,5 @@
 package com.example.monitoring.domain;
 
-public enum Role {
+public enum UserRole {
     USER, ADMIN
 }

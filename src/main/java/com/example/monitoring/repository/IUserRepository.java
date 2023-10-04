@@ -1,11 +1,13 @@
 package com.example.monitoring.repository;
 
-import com.example.monitoring.domain.Role;
+import com.example.monitoring.domain.UserRole;
 import com.example.monitoring.domain.User;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface IUserRepository {
 
     //SELECT
@@ -14,7 +16,7 @@ public interface IUserRepository {
 
     List<User> findUsersByName(String name);
 
-    List<User> findUsersByNameNRole(String name, Role role);
+    List<User> findUsersByNameNRole(String name, UserRole userRole);
     List<User> findAll();
 
     boolean findDuplicatedEmail(String email);
@@ -25,7 +27,7 @@ public interface IUserRepository {
     //UPDATE
     boolean updateUserByUniqueKey(User user);/* User-Edit POST */
 
-    void updateUserRoleByKey(String key, Role role);
+    void updateUserRoleByKey(String key, UserRole userRole);
 
     //DELETE
     void deleteUserByKey(String key);

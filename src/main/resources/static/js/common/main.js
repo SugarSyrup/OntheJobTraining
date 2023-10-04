@@ -98,16 +98,17 @@ const startInterval = (callback) => {
 
 DetailBtns.forEach((detailBtn) => {
     Modal(detailBtn, DetailOverlay, DetailModalNo);
-    document.querySelector('.modalHeader h1').innerText = detailBtn.dataset.date.substring(0,4) + "년 " + detailBtn.dataset.date.substring(5,7) + "월 " + detailBtn.dataset.date.substring(8,10) + "일";
-    document.querySelector('.modalHeader span').innerText = detailBtn.dataset.location;
-    modalCurrent = detailBtn.dataset.id.substring(0,10);
-    modalCurrentName =detailBtn.dataset.name;
 
     let scheduledFunc;
 
     detailBtn.addEventListener('click', () => {
         scheduledFunc = startInterval( () => {
             let date = new Date();
+
+            document.querySelector('.modalHeader h1').innerText = detailBtn.dataset.date.substring(0,4) + "년 " + detailBtn.dataset.date.substring(5,7) + "월 " + detailBtn.dataset.date.substring(8,10) + "일";
+            document.querySelector('.modalHeader span').innerText = detailBtn.dataset.location;
+            modalCurrent = detailBtn.dataset.id.substring(0,10);
+            modalCurrentName =detailBtn.dataset.name;
 
             fetch(`http://${window.location.host}/main/info`, {
                     method:'POST',

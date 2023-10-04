@@ -1,8 +1,6 @@
 package com.example.monitoring.controller;
 
-import com.example.monitoring.domain.EquipmentNameCheck;
-import com.example.monitoring.domain.ResponseMessage;
-import com.example.monitoring.domain.Role;
+import com.example.monitoring.domain.UserRole;
 import com.example.monitoring.domain.User;
 import com.example.monitoring.service.UserService;
 import org.springframework.stereotype.Controller;
@@ -45,7 +43,7 @@ public class UsersController {
             this.users = userService.findUsersByName(name);
         }
         else {
-            Role userRole = Role.valueOf(role);
+            UserRole userRole = UserRole.valueOf(role);
             this.users = userService.findUsersByNameNRole(name, userRole);
         }
 
@@ -63,13 +61,13 @@ public class UsersController {
     @PostMapping("/users")
     public String PostUsers(HttpServletRequest req) {
         this.name = req.getParameter("name");
-        this.role = req.getParameter("role");
+        this.role = req.getParameter("userRole");
 
         if(role.equals("NONE")) {
             this.users = userService.findUsersByName(name);
         }
         else {
-            Role userRole = Role.valueOf(role);
+            UserRole userRole = UserRole.valueOf(role);
             this.users = userService.findUsersByNameNRole(name, userRole);
         }
 
@@ -89,7 +87,7 @@ public class UsersController {
 
     @PostMapping("/api/role-change")
     public String UserRoleChange(HttpServletRequest req) {
-        String role = req.getParameter("role");
+        String role = req.getParameter("userRole");
         String user_no = req.getParameter("user_no");
 
         userService.updateUserRole(user_no, role);

@@ -45,7 +45,7 @@
             <label for="name">Name</label>
             <input type="text" placeholder="이름을 입력해주세요..." id="name" name="name" value=<%=request.getAttribute("name")%> required/>
         </div>
-        <span class="errmsg">${ requestScope.Message.getOk() == "false" ? requestScope.Message.getMessage() : ""}</span>
+        <span class="errmsg">${ requestScope.Message.isOK() == "false" ? requestScope.Message.getMessage() : ""}</span>
         <a class="submit_button red" id="modal_open">
             <span>
                 회원 탈퇴
