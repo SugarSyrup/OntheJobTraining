@@ -1,5 +1,12 @@
 package com.example.monitoring.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Equipment {
     private String id;
     private String name;
