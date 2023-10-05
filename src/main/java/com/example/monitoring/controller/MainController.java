@@ -92,6 +92,5 @@ public class MainController {
     public List<SensorValueVO> postInfo(HttpServletRequest req, @RequestBody SensorInfoPostBody sensorInfoPostBody)  throws Exception {
         List<SensorValueVO> dateInfo = staticsService.getDateInfo(this.division, sensorInfoPostBody.getDate(), sensorInfoPostBody.getName());
         return dateInfo;
-    };
+    }
 }
-

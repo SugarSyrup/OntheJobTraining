@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class UsersController {
@@ -35,7 +36,7 @@ public class UsersController {
         ServletContext servCon = req.getServletContext();
         servCon.setAttribute("modalID", "");
 
-        if(!(Boolean) session.getAttribute("isAdmin")){
+        if(Objects.isNull(session.getAttribute("isAdmin")) || !(Boolean) session.getAttribute("isAdmin")){
             return "redirect:/";
         }
 
