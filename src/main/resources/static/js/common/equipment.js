@@ -234,3 +234,13 @@ updateForm.addEventListener('submit', (e) => {
         });
     }
 })
+
+
+
+/* Excel Download */
+const excelButton = document.querySelector('.excel');
+
+excelButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    location.href = `http://${window.location.host}/api/equipment/download`;
+})

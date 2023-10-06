@@ -10,9 +10,9 @@ public interface IStaticsRepository {
 
     public List<SensorStaticsValueVO> getHumidityStatics(String location, String name, String startDate, String endDate) throws Exception;
 
-    public List<SensorValueVO> getTemperatures(String location, String name, String startDate, String endDate) throws Exception;
+    public List<SensorValueVO> getTemperatures(String location, String name, String startDate, String endDate, String equipmentName) throws Exception;
 
-    public List<SensorValueVO> getHumidities(String location, String name, String startDate, String endDate) throws Exception;
+    public List<SensorValueVO> getHumidities(String location, String name, String startDate, String endDate, String equipmentName) throws Exception;
 
     public List<String> getTemperatureEquipmentsList(String location, String name, String startDate, String endDate) throws Exception;
 

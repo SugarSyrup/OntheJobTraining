@@ -166,9 +166,10 @@ DetailBtns.forEach((detailBtn) => {
     DetailModalNo.addEventListener('click', () => {clearInterval(scheduledFunc)});
 });
 
+/* Excel Download */
+const excelButton = document.querySelector('.excel');
 
-
-/* table animation */
-const tableShowBtn = document.querySelector('.tableButton');
-const chartContainer = document.querySelector('.chart_container');
-const tableContainer = document.querySelector('.table_container');
+excelButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    location.href = `http://${window.location.host}/api/monitoring/download`;
+})

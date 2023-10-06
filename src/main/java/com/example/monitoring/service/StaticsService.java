@@ -38,11 +38,11 @@ public class StaticsService {
     }
 
 
-    public List<SensorValueVO> getValues(String division, String location, String name, String startDate, String endDate) throws Exception {
+    public List<SensorValueVO> getValues(String division, String location, String name, String startDate, String endDate, String equipmentName) throws Exception {
         if(division.equals("기온")) {
-            return staticsRepository.getTemperatures(location, name, startDate, endDate);
+            return staticsRepository.getTemperatures(location, name, startDate, endDate, equipmentName);
         } else {
-            return staticsRepository.getHumidities(location, name, startDate, endDate);
+            return staticsRepository.getHumidities(location, name, startDate, endDate, equipmentName);
         }
     }
 }

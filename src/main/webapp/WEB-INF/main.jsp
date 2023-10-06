@@ -74,60 +74,63 @@
 
 <main>
     <div class="sidemenu_wrapper">
-        <form class="sidemenu" id="sidemenuForm" action="/main/search" method="post">
-            <div class="input_wrapper">
-                <label for="division">구분</label>
-                <select name="division" id="division" form="sidemenuForm">
-                    <!--
-                    <option value="NONE" ${requestScope.division.equals("NONE") ? "selected" : ""} >
-                        전체
-                    </option>
-                    -->
-                    <option value="기온" ${requestScope.division.equals("기온") ? "selected" : ""} >
-                        기온
-                    </option>
-                    <option value="습도" ${requestScope.division.equals("습도") ? "selected" : ""} >
-                        습도
-                    </option>
-                </select>
-            </div>
-            <div class="input_wrapper">
-                <label for="location">지역</label>
-                <select name="location" id="location" form="sidemenuForm">
-                    <%
-                        List<String> LOCATIONS_LIST = (List<String>) request.getAttribute("temperature_locations");
-                        for(String locationElement : LOCATIONS_LIST) {
-                    %>
-                    <option value="<%= locationElement %>" <%= request.getAttribute("location").equals(locationElement) ? "selected" : ""%> class="temperatureOption" >
-                        <%= locationElement %>
-                    </option>
-                    <% }
-                        LOCATIONS_LIST = (List<String>) request.getAttribute("humidity_locations");
-                        for(String locationElement : LOCATIONS_LIST) {
-                    %>
-                    <option value="<%= locationElement %>" <%= request.getAttribute("location").equals(locationElement) ? "selected" : ""%> class="humidityOption" >
-                        <%= locationElement %>
-                    </option>
-                    <%
-                        }
-                    %>
-                </select>
-            </div>
-            <div class="input_wrapper">
-                <label>기간</label>
-<%--                <input type="date" name="start_date" class="startDate" min="2023-08-01" max="2023-08-07" value="<%= request.getAttribute("startDate") %>" />--%>
-                <input type="date" name="start_date" class="startDate" value="<%= request.getAttribute("startDate") %>" />
-                <span class="dateSeperator">~</span>
-<%--                <input type="date" name="end_date" class="endDate" min="2023-08-01" max="2023-08-07" value="<%= request.getAttribute("endDate") %>" />--%>
-                <input type="date" name="end_date" class="endDate" value="<%= request.getAttribute("endDate") %>" />
-            </div>
-            <div class="input_wrapper">
-                <label for="name">장비명</label>
-                <input id="name" placeholder="장비명을 입력하세요.." name="equipment_name" value="${requestScope.name == "" ? "" : requestScope.name}" />
-            </div>
-            <input type="submit" value="검색하기" class="submit"/>
-            <button class="reset_button">조건 초기화</button>
-        </form>
+        <div class="rightAlign">
+            <form class="sidemenu" id="sidemenuForm" action="/main/search" method="post">
+                <div class="input_wrapper">
+                    <label for="division">구분</label>
+                    <select name="division" id="division" form="sidemenuForm">
+                        <!--
+                        <option value="NONE" ${requestScope.division.equals("NONE") ? "selected" : ""} >
+                            전체
+                        </option>
+                        -->
+                        <option value="기온" ${requestScope.division.equals("기온") ? "selected" : ""} >
+                            기온
+                        </option>
+                        <option value="습도" ${requestScope.division.equals("습도") ? "selected" : ""} >
+                            습도
+                        </option>
+                    </select>
+                </div>
+                <div class="input_wrapper">
+                    <label for="location">지역</label>
+                    <select name="location" id="location" form="sidemenuForm">
+                        <%
+                            List<String> LOCATIONS_LIST = (List<String>) request.getAttribute("temperature_locations");
+                            for(String locationElement : LOCATIONS_LIST) {
+                        %>
+                        <option value="<%= locationElement %>" <%= request.getAttribute("location").equals(locationElement) ? "selected" : ""%> class="temperatureOption" >
+                            <%= locationElement %>
+                        </option>
+                        <% }
+                            LOCATIONS_LIST = (List<String>) request.getAttribute("humidity_locations");
+                            for(String locationElement : LOCATIONS_LIST) {
+                        %>
+                        <option value="<%= locationElement %>" <%= request.getAttribute("location").equals(locationElement) ? "selected" : ""%> class="humidityOption" >
+                            <%= locationElement %>
+                        </option>
+                        <%
+                            }
+                        %>
+                    </select>
+                </div>
+                <div class="input_wrapper">
+                    <label>기간</label>
+    <%--                <input type="date" name="start_date" class="startDate" min="2023-08-01" max="2023-08-07" value="<%= request.getAttribute("startDate") %>" />--%>
+                    <input type="date" name="start_date" class="startDate" value="<%= request.getAttribute("startDate") %>" />
+                    <span class="dateSeperator">~</span>
+    <%--                <input type="date" name="end_date" class="endDate" min="2023-08-01" max="2023-08-07" value="<%= request.getAttribute("endDate") %>" />--%>
+                    <input type="date" name="end_date" class="endDate" value="<%= request.getAttribute("endDate") %>" />
+                </div>
+                <div class="input_wrapper">
+                    <label for="name">장비명</label>
+                    <input id="name" placeholder="장비명을 입력하세요.." name="equipment_name" value="${requestScope.name == "" ? "" : requestScope.name}" />
+                </div>
+                <input type="submit" value="검색하기" class="submit"/>
+                <button class="reset_button">조건 초기화</button>
+            </form>
+            <button class="excel">Excel 다운로드</button>
+        </div>
     </div>
     <% if (TEMPERATURE_LIST.size() > 0 ) { %>
     <div class="equipmentPerWrapper">

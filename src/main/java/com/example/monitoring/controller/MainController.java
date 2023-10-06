@@ -142,15 +142,12 @@ public class MainController {
             bodyCell.setCellValue(_static.getMIN());
         }
 
-        List<String> equipments = staticsService.getEquipmentsList(this.division, this.location, "", "", "");
+        List<String> equipments = staticsService.getEquipmentsList(this.division, this.location, this.name, this.startDate, this.endDate);
         for(var j = 0; j < equipments.size(); j++) {
             Sheet sheet = workbook.createSheet(equipments.get(j));
 
             rowCount = 0;
             headerNames = new String[]{"일시", "측정값"};
-
-            headerRow = null;
-            headerCell = null;
 
             headerRow = sheet.createRow(rowCount++);
             for(int i = 0; i < headerNames.length; i++) {
@@ -158,10 +155,7 @@ public class MainController {
                 headerCell.setCellValue(headerNames[i]);
             }
 
-            bodyRow = null;
-            bodyCell = null;
-
-            List<SensorValueVO> values = staticsService.getValues(this.division, this.location, this.name, this.startDate, this.endDate);
+            List<SensorValueVO> values = staticsService.getValues(this.division, this.location, this.name, this.startDate, this.endDate, equipments.get(j));
             for (SensorValueVO value : values) {
                 bodyRow = sheet.createRow(rowCount++);
                 bodyCell = bodyRow.createCell(0);

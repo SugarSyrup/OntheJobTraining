@@ -191,8 +191,8 @@ public class StaticsRepository implements IStaticsRepository{
         return sensorValueVOS;
     }
 
-    public List<SensorValueVO> getTemperatures(String location, String name, String startDate, String endDate) throws Exception {
-        String sql = "SELECT * FROM temperature LEFT JOIN equipment ON temperature.equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ?";
+    public List<SensorValueVO> getTemperatures(String location, String name, String startDate, String endDate, String equipmentName) throws Exception {
+        String sql = "SELECT * FROM temperature LEFT JOIN equipment ON temperature.equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ? AND equipment.name LIKE ?";
 
         @Cleanup Connection conn = null;
         @Cleanup PreparedStatement pstmt = null;
@@ -204,6 +204,7 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
         pstmt.setString(3, "%" + name + "%");
         pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
+        pstmt.setString(5, "%" + equipmentName + "%");
 
         rs = pstmt.executeQuery();
 
@@ -221,8 +222,8 @@ public class StaticsRepository implements IStaticsRepository{
         return sensorValueVOS;
     }
 
-    public List<SensorValueVO> getHumidities(String location, String name, String startDate, String endDate) throws Exception {
-        String sql = "SELECT * FROM humidity LEFT JOIN equipment ON humidity.equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ?";
+    public List<SensorValueVO> getHumidities(String location, String name, String startDate, String endDate, String equipmentName) throws Exception {
+        String sql = "SELECT * FROM humidity LEFT JOIN equipment ON humidity.equipment_no = equipment.equipment_no WHERE date >= ? AND date <= ? AND name LIKE ? AND location LIKE ? AND equipment.name LIKE ?";
 
         @Cleanup Connection conn = null;
         @Cleanup PreparedStatement pstmt = null;
@@ -234,13 +235,14 @@ public class StaticsRepository implements IStaticsRepository{
         pstmt.setString(2, endDate.equals("") ? "2030-12-31" : endDate);
         pstmt.setString(3, "%" + name + "%");
         pstmt.setString(4, location.equals("NONE") ? "%%" : "%" + location + "%");
+        pstmt.setString(5, "%" + equipmentName + "%");
 
         rs = pstmt.executeQuery();
 
         List<SensorValueVO> sensorValueVOS = new ArrayList<SensorValueVO>();
         while(rs.next()) {
             SensorValueVO sensorValueVO = new SensorValueVO(
-                    rs.getInt("temperature_no"),
+                    rs.getInt("humidity_no"),
                     rs.getInt("equipment_no"),
                     rs.getFloat("value"),
                     rs.getString("date")
