@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface IUserRepository {
-
     //SELECT
     Optional<User> findByEmail(String email); /* Login */
     Optional<User> findByKey(String key); /* User-Edit GET */

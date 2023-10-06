@@ -36,4 +36,13 @@ public class StaticsService {
             return staticsRepository.getDateHumidities(date, name);
         }
     }
+
+
+    public List<SensorValueVO> getValues(String division, String location, String name, String startDate, String endDate) throws Exception {
+        if(division.equals("기온")) {
+            return staticsRepository.getTemperatures(location, name, startDate, endDate);
+        } else {
+            return staticsRepository.getHumidities(location, name, startDate, endDate);
+        }
+    }
 }

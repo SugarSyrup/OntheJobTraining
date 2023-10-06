@@ -206,7 +206,7 @@ public class EquipementRepository implements IEquipementRepository{
 
             pstmt.executeQuery();
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            throw new IllegalStateException("저장 실패");
         } finally {
             close(conn, pstmt);
         }

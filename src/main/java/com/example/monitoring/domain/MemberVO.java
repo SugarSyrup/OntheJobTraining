@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemverVO {
+public class MemberVO {
     private int user_no;
     private String email;
     private String password;

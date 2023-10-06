@@ -8,6 +8,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.Optional;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -64,6 +65,36 @@ public class UserServiceTest {
     }
 
     @Order(4)
+    @Test
+    @DisplayName("ADMIN 권한 확인 테스트")
+    public void adminCheckTest() {
+        ResponseMessage msg = userService.login(testUser.getEmail(), testUser.getPassword());
+        boolean result = userService.findAdminById(msg.getMessage());
+
+        Assertions.assertThat(result).isFalse();
+    }
+
+    @Order(5)
+    @Test
+    @DisplayName("유저 이름과 권한으로 찾기 테스트")
+    public void findUserByNameNRoleTest() {
+        List<User> result = userService.findUsersByNameNRole(testUser.getName(), testUser.getUserRole());
+        Assertions.assertThat(result.size()).isNotZero();
+    }
+
+    @Order(6)
+    @Test
+    @DisplayName("유저 권한 업데이트 테스트")
+    public void updateUserRoleTest() {
+        ResponseMessage msg = userService.login(testUser.getEmail(), testUser.getPassword());
+        userService.updateUserRole(msg.getMessage(), String.valueOf(UserRole.ADMIN));
+        User result = userService.findUserByKey(msg.getMessage());
+
+        System.out.println(result);
+    }
+
+
+    @Order(7)
     @Test
     @DisplayName("회원 삭제 테스트")
     public void deleteTest() throws Exception {

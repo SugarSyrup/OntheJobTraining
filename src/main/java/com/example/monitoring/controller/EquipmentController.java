@@ -4,13 +4,21 @@ import com.example.monitoring.domain.EquipmentNameCheck;
 import com.example.monitoring.domain.Equipment;
 import com.example.monitoring.domain.ResponseMessage;
 import com.example.monitoring.service.EquipmentService;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -138,12 +146,59 @@ public class EquipmentController {
         return "redirect:/equipment";
     }
 
-
     @PostMapping("/api/equipment-delete")
     public String DeleteUser(HttpServletRequest req, @RequestBody Equipment equipment) {
 
         equipmentService.deleteEquipmentByName(equipment.getName());
 
         return "redirect:/equipment";
+    }
+
+    @GetMapping("/api/equipment/download")
+    public void downloadEquipments(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("Sheet1"); //엑셀 Sheet 이름
+
+        int rowCount = 0;
+        String headerNames[] = new String[]{"장비명", "지역", "구분", "등록 날짜"};
+
+        Row headerRow = null;
+        Cell headerCell = null;
+
+        headerRow = sheet.createRow(rowCount++);
+        for(int i = 0; i < headerNames.length; i++) {
+            headerCell = headerRow.createCell(i);
+            headerCell.setCellValue(headerNames[i]);
+        }
+
+        Row bodyRow = null;
+        Cell bodyCell = null;
+
+        for(Equipment equipment : equipments) {
+            bodyRow = sheet.createRow(rowCount++);
+            bodyCell = bodyRow.createCell(0);
+            bodyCell.setCellValue(equipment.getName());
+
+            bodyCell = bodyRow.createCell(1);
+            bodyCell.setCellValue(equipment.getLocation());
+
+            bodyCell = bodyRow.createCell(2);
+            bodyCell.setCellValue(equipment.getDivision().substring(1, equipment.getDivision().length()-1));
+
+            bodyCell = bodyRow.createCell(3);
+            bodyCell.setCellValue(equipment.getRegist_date());
+        }
+
+        String fileName = "tmp";
+
+        res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        res.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");
+        ServletOutputStream servletOutputStream = res.getOutputStream();
+
+        workbook.write(servletOutputStream);
+        workbook.close();
+
+        servletOutputStream.flush();
+        servletOutputStream.close();
     }
 }

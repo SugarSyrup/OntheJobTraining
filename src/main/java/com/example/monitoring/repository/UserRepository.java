@@ -131,7 +131,7 @@ public class UserRepository implements IUserRepository {
 
     @Override
     public List<User> findUsersByNameNRole(String name, UserRole userRole) {
-        String sql = "select * from user WHERE name LIKE ? AND role = ?";
+        String sql = "select * from user WHERE name LIKE ? AND role LIKE ?";
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -140,7 +140,7 @@ public class UserRepository implements IUserRepository {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, "%" + name + "%");
-            pstmt.setString(2, String.valueOf(userRole));
+            pstmt.setString(2, "%" + String.valueOf(userRole) + "%");
             rs = pstmt.executeQuery();
             List<User> users = new ArrayList<>();
             while (rs.next()) {
