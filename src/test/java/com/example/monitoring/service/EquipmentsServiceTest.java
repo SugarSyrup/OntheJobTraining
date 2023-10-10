@@ -61,7 +61,6 @@ public class EquipmentsServiceTest {
         Equipment prev = equipmentService.findEquipments(testEquipment.getDivision(), testEquipment.getLocation(), testEquipment.getName()).get(0);
         prev.setId(prev.getName());
         prev.setLocation("CHANGED TEST 지역");
-        System.out.println(prev);
         equipmentService.updateEquipment(prev);
 
         Equipment result = equipmentService.findEquipments(testEquipment.getDivision(), testEquipment.getLocation(), testEquipment.getName()).get(0);

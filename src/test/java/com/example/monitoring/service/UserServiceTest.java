@@ -89,8 +89,6 @@ public class UserServiceTest {
         ResponseMessage msg = userService.login(testUser.getEmail(), testUser.getPassword());
         userService.updateUserRole(msg.getMessage(), String.valueOf(UserRole.ADMIN));
         User result = userService.findUserByKey(msg.getMessage());
-
-        System.out.println(result);
     }
 
 

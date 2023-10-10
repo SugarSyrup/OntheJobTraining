@@ -189,7 +189,7 @@ public class EquipmentController {
             bodyCell.setCellValue(equipment.getRegist_date());
         }
 
-        String fileName = "tmp";
+        String fileName = "equipments";
 
         res.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         res.setHeader("Content-Disposition", "attachment;filename=" + fileName + ".xlsx");

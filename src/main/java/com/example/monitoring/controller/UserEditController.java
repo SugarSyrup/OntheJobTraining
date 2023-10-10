@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 @Controller
 public class UserEditController {
@@ -45,10 +46,11 @@ public class UserEditController {
         HttpSession session = req.getSession();
         User user = userService.findUserByKey((String) session.getAttribute("id"));
 
-        user.setName((String) req.getParameter("name"));
-        if(req.getAttribute("password") != null){
-            user.setPassword((String) req.getParameter("password"));
+        user.setName(req.getParameter("name"));
+        if(Objects.isNull(req.getAttribute("password"))){
+            user.setPassword(req.getParameter("password"));
         }
+
 
         boolean ok = userService.updateUser(user);
         if( !ok ) {
