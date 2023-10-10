@@ -9,7 +9,7 @@ equipment_link.addEventListener('click', (e) => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
+
     })
 })
 
@@ -20,7 +20,6 @@ users_link.addEventListener('click', (e) => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
     })
 })
 
@@ -35,6 +34,6 @@ reset_button.addEventListener('click', (e) => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
+
     })
 })

@@ -47,7 +47,6 @@ duplicatedNotBtn.addEventListener('click', (e) => {
         }).then((response) => {
             location.href = response.url;
         }).catch((error) => {
-            console.log(error);
         });
     }
 })
@@ -81,7 +80,7 @@ DeleteModalYes.addEventListener('click', (e) => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
+
     })
 })
 
@@ -110,7 +109,7 @@ registerForm.addEventListener('submit', (e) => {
         }).then((response) => {
             location.href = response.url;
         }).catch((error) => {
-            console.log(error);
+
         });
     }
 })
@@ -176,7 +175,7 @@ updateDNBtn.addEventListener('click', (e) => {
                 e.currentTarget.innerText = "다시 입력";
                 updateFormInput.disabled = true;
         } else {
-            console.log("fetch work!")
+
             fetch(`http://${window.location.host}/api/equipment/duplicated-check`, {
                 method: 'POST',
                 headers: {
@@ -189,9 +188,9 @@ updateDNBtn.addEventListener('click', (e) => {
                 .then((data) => {
                     const emailErr = document.querySelector('.updateEmailErrmsg');
                     const btn = document.querySelector('.updateDNButton');
-                    console.log(data);
+
                     if (data.flag) {
-                        console.log(true);
+
                         emailErr.innerText = "중복된 장비명 입니다.";
                     } else {
                         emailErr.innerText = "";
@@ -201,7 +200,7 @@ updateDNBtn.addEventListener('click', (e) => {
                     }
                 })
                 .catch((error) => {
-                    console.log(error);
+
             });
         }
     }
@@ -230,7 +229,7 @@ updateForm.addEventListener('submit', (e) => {
         }).then((response) => {
             location.href = response.url;
         }).catch((error) => {
-            console.log(error);
+
         });
     }
 })

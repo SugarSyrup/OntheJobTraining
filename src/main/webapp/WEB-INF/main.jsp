@@ -289,8 +289,8 @@
 
             document.getElementById(equipment + "TableButton").addEventListener('click', (e) => {
 
-                console.log(document.getElementById(equipment));
-                console.log(document.getElementById(equipment + "Table"));
+
+
                 if (e.currentTarget.innerText == "테이블 보기") {
                     e.currentTarget.innerText = "테이블 닫기";
                     document.getElementById(equipment).style.width = "55%";

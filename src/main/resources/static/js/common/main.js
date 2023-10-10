@@ -50,7 +50,6 @@ resetButton.addEventListener('click', (event) => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
     });
 })
 
@@ -79,12 +78,12 @@ const DetailOverlay = document.querySelector('.modal_wrapper');
 const DetailModalNo = document.querySelector('.detail_modal_no');
 
 const startInterval = (callback) => {
-    console.log("callback work");
+
     callback();
     let returnValue;
     const intervalCheck = setInterval(() => {
         const date = new Date();
-        console.log("interval Check");
+
         if (date.getMinutes() % 5 === 0) {
             callback();
             returnValue = setInterval(callback, 1000 * 60 * 5);
@@ -158,7 +157,7 @@ DetailBtns.forEach((detailBtn) => {
                         }
                     })
             }).catch((error) => {
-                    console.log(error);
+
                 })
 
         });

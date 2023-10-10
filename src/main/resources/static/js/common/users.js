@@ -6,7 +6,7 @@ const RoleOverlay = document.querySelector('.role_overlay');
 const RoleModalYes = document.querySelector('.role_modal_yes');
 const RoleModalNo = document.querySelector('.role_modal_no');
 
-console.log(RoleModalNo);
+
 RoleBtns.forEach((btn) => {
     Modal(btn, RoleOverlay, RoleModalNo);
     btn.addEventListener('click', () => {
@@ -31,7 +31,7 @@ const DeleteOverlay = document.querySelector('.delete_overlay');
 const DeleteModalYes = document.querySelector('.delete_modal_yes');
 const DeleteModalNo = document.querySelector('.delete_modal_no');
 
-console.log(DeleteBtns);
+
 DeleteBtns.forEach((btn) => {
     Modal(btn, DeleteOverlay, DeleteModalNo);
     btn.addEventListener('click', () => {
@@ -52,6 +52,6 @@ DeleteModalYes.addEventListener('click', () => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
+
     })
 })

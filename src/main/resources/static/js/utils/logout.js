@@ -9,6 +9,6 @@ logout_btn.addEventListener('click', (e) => {
     }).then((response) => {
         location.href = response.url;
     }).catch((error) => {
-        console.log(error);
+
     })
 })
